@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- Full-page links avoid a vinext client-navigation error. */
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { PortfolioTerminal } from "@/components/portfolio-terminal";
 
 export const metadata: Metadata = {
   title: "Selected Work — Arun Balakrishna Bhat",
@@ -39,22 +40,23 @@ export default function WorkPage() {
     <div className="work-page" id="top">
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-header wrap">
-        <Link className="brand" href="/" aria-label="Arun Balakrishna Bhat home">
+        <a className="brand" href="/" aria-label="Arun Balakrishna Bhat home">
           <span className="brand-mark">ab<span>.</span></span>
           <span className="brand-name">Arun Balakrishna Bhat</span>
-        </Link>
+        </a>
         <nav aria-label="Main navigation">
-          <Link href="/#about">About</Link>
-          <Link href="/#focus">Focus</Link>
-          <Link href="/#activity">Activity</Link>
-          <Link href="/work" aria-current="page">Work</Link>
-          <Link href="/#contact">Contact <ArrowUpRight size={15} /></Link>
+          <a href="/#about">About</a>
+          <a href="/#focus">Focus</a>
+          <a href="/#activity">Activity</a>
+          <a href="/work" aria-current="page">Work</a>
+          <a href="/#contact">Contact <ArrowUpRight size={15} /></a>
+          <PortfolioTerminal />
         </nav>
       </header>
 
       <main id="main">
         <div className="work-page-intro wrap">
-          <Link className="work-back" href="/"><ArrowLeft size={17} /> Back to home</Link>
+          <a className="work-back" href="/"><ArrowLeft size={17} /> Back to home</a>
           <p className="eyebrow">ARUN BALAKRISHNA BHAT / SELECTED WORK</p>
           <h1>Tools built for <span>real problems.</span></h1>
           <p>A few projects across Kafka, infrastructure, and developer tooling.</p>

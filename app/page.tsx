@@ -8,7 +8,7 @@ import {
   Trophy,
   Workflow,
 } from "lucide-react";
-import Link from "next/link";
+import { PortfolioTerminal } from "@/components/portfolio-terminal";
 import { GitHubActivity } from "@/components/github-activity";
 import { LeetCodeActivity } from "@/components/leetcode-activity";
 
@@ -38,8 +38,9 @@ export default function Home() {
           <a href="#about">About</a>
           <a href="#focus">Focus</a>
           <a href="#activity">Activity</a>
-          <Link href="/work">Work <ArrowUpRight size={15} /></Link>
+          <a href="/work">Work <ArrowUpRight size={15} /></a>
           <a href="#contact">Contact <ArrowUpRight size={15} /></a>
+          <PortfolioTerminal />
         </nav>
       </header>
 
@@ -60,7 +61,7 @@ export default function Home() {
               <h1 id="hero-title">ARUN<br/>BALAKRISHNA<br/><span>BHAT<span className="period">.</span></span></h1>
               <p className="hero-description">I build the platforms and tools that help software teams move with confidence.</p>
               <div className="hero-actions">
-                <Link className="button-primary" href="/work">Explore my work <ArrowUpRight size={18} /></Link>
+                <a className="button-primary" href="/work">Explore my work <ArrowUpRight size={18} /></a>
                 <a className="button-secondary" href="#contact">Get in touch <ArrowUpRight size={18} /></a>
               </div>
             </div>
