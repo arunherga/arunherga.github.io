@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-html-link-for-pages -- Full-page links avoid a vinext client-navigation error. */
+/* eslint-disable @next/next/no-html-link-for-pages -- Full-page navigation keeps the portfolio links simple. */
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { PortfolioTerminal } from "@/components/portfolio-terminal";
@@ -6,10 +6,10 @@ import { PortfolioTerminal } from "@/components/portfolio-terminal";
 export const metadata: Metadata = {
   title: "Selected Work — Arun Balakrishna Bhat",
   description: "Selected platform engineering projects by Arun Balakrishna Bhat, including kgrep, confluent-terraform-mock, and KafkaEndToEndLatency.",
-  alternates: { canonical: "/work" },
+  alternates: { canonical: "/work/" },
   openGraph: {
     type: "website",
-    url: "/work",
+    url: "/work/",
     siteName: "Arun Balakrishna Bhat",
     title: "Selected Work — Arun Balakrishna Bhat",
     description: "Explore kgrep, confluent-terraform-mock, and KafkaEndToEndLatency: platform engineering projects by Arun Balakrishna Bhat.",

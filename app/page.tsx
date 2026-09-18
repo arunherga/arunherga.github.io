@@ -101,7 +101,7 @@ export default function Home() {
           <div className="section-label"><span>01 / ACTIVITY</span><span className="label-line" /></div>
           <div>
             <h2 id="activity-title">The work in <span>motion.</span></h2>
-            <p className="activity-intro">GitHub contributions and LeetCode practice, shown here from my public profiles.</p>
+            <p className="activity-intro">GitHub contributions and LeetCode practice from my public profiles, refreshed periodically.</p>
             <div className="activity-panels">
               <GitHubActivity username="arunherga" />
               <LeetCodeActivity />

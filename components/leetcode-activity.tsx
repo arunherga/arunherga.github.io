@@ -27,7 +27,7 @@ export function LeetCodeActivity() {
 
     async function load() {
       try {
-        const response = await fetch(`/api/activity/leetcode?year=${year}`, { signal: controller.signal });
+        const response = await fetch(`/activity/leetcode/${year}.json`, { signal: controller.signal });
         if (!response.ok) throw new Error("LeetCode activity unavailable");
         const result = (await response.json()) as LeetCodeData;
         if (!Array.isArray(result.days) || !Array.isArray(result.activeYears)) {
@@ -65,7 +65,7 @@ export function LeetCodeActivity() {
       <div className="activity-heading">
         <div className="activity-icon"><Code2 size={22} strokeWidth={1.7} /></div>
         <div>
-          <span className="activity-kicker">LIVE FROM LEETCODE</span>
+          <span className="activity-kicker">PUBLIC LEETCODE ACTIVITY</span>
           <h3>Problem solving</h3>
         </div>
         <a href="https://leetcode.com/u/arunHerga/" target="_blank" rel="noopener noreferrer">
@@ -105,7 +105,7 @@ export function LeetCodeActivity() {
           {unavailable ? "LeetCode activity is temporarily unavailable. You can still view the profile." : "Loading LeetCode activity…"}
         </p>
       )}
-      <p className="activity-note">Only public LeetCode activity appears here.</p>
+      <p className="activity-note">Only public LeetCode activity appears here. This snapshot refreshes periodically.</p>
     </div>
   );
 }

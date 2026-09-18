@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-location-assign-relative-destination -- Full-page navigation avoids a vinext client-navigation error. */
+/* eslint-disable @next/next/no-html-link-for-pages, @next/next/no-location-assign-relative-destination -- The terminal uses direct page navigation. */
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";

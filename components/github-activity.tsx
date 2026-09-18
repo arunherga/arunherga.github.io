@@ -63,7 +63,7 @@ export function GitHubActivity({ username }: { username: string }) {
 
     async function loadCalendar() {
       try {
-        const response = await fetch("/api/activity/github", { signal: controller.signal });
+        const response = await fetch("/activity/github.json", { signal: controller.signal });
         if (!response.ok) throw new Error("GitHub calendar unavailable");
         const result = (await response.json()) as GitHubCalendar;
         if (!Array.isArray(result.days) || !result.from || !result.to) {
@@ -84,7 +84,7 @@ export function GitHubActivity({ username }: { username: string }) {
       <div className="activity-heading">
         <div className="activity-icon"><Code2 size={22} strokeWidth={1.7} /></div>
         <div>
-          <span className="activity-kicker">LIVE FROM GITHUB</span>
+          <span className="activity-kicker">PUBLIC GITHUB ACTIVITY</span>
           <h3>GitHub contributions</h3>
         </div>
         <a href={profileUrl} target="_blank" rel="noopener noreferrer" aria-label="View Arun's GitHub profile">
@@ -139,7 +139,7 @@ export function GitHubActivity({ username }: { username: string }) {
               : "Loading recent public activity…"}
         </p>
       )}
-      <p className="activity-note">Only public GitHub activity appears here. Updates may take a while to show.</p>
+      <p className="activity-note">Only public GitHub activity appears here. The contribution chart refreshes periodically.</p>
     </div>
   );
 }
