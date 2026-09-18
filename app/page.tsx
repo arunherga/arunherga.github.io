@@ -18,6 +18,33 @@ const focus = [
   { number: "03", icon: Terminal, title: "Developers first", text: "Clear interfaces, useful tooling, and a simpler path through everyday complexity." },
 ];
 
+const projects = [
+  {
+    number: "01",
+    name: "kgrep",
+    category: "KAFKA TOOLING",
+    description: "A command-line tool for searching, watching, and exporting Kafka topic records without writing a one-off consumer. It also helps inspect topics and consumer-group lag.",
+    tags: ["Go", "Apache Kafka", "CLI", "Schema Registry"],
+    href: "https://github.com/arunherga/kgrep",
+  },
+  {
+    number: "02",
+    name: "confluent-terraform-mock",
+    category: "INFRASTRUCTURE SANDBOX",
+    description: "A local Confluent Cloud stand-in that lets you run real Terraform plan, apply, and destroy workflows without touching a live cloud account.",
+    tags: ["Go", "Terraform", "Confluent Cloud"],
+    href: "https://github.com/arunherga/confluent-terraform-mock",
+  },
+  {
+    number: "03",
+    name: "KafkaEndToEndLatency",
+    category: "OBSERVABILITY",
+    description: "A Kafka latency profiler that measures time between message timestamps and reports topic-wide and per-partition results to Kafka or CSV.",
+    tags: ["Python", "Apache Kafka", "Latency"],
+    href: "https://github.com/arunherga/KafkaEndToEndLatency",
+  },
+];
+
 const contacts = [
   { label: "LinkedIn", detail: "Connect professionally", href: "https://www.linkedin.com/in/arunbbhat/", icon: BriefcaseBusiness, external: true },
   { label: "GitHub", detail: "Explore public work", href: "https://github.com/arunherga", icon: Code2, external: true },
@@ -38,6 +65,7 @@ export default function Home() {
           <a href="#about">About</a>
           <a href="#focus">Focus</a>
           <a href="#activity">Activity</a>
+          <a href="#work">Work</a>
           <a href="#contact">Contact <ArrowUpRight size={15} /></a>
         </nav>
       </header>
@@ -108,8 +136,31 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="work" className="work wrap section-grid" aria-labelledby="work-title">
+          <div className="section-label"><span>04 / SELECTED WORK</span><span className="label-line" /></div>
+          <div>
+            <h2 id="work-title">Tools built for <span>real problems.</span></h2>
+            <p className="work-intro">A few projects across Kafka, infrastructure, and developer tooling.</p>
+            <div className="work-list">
+              {projects.map((project, index) => (
+                <article className={`work-card${index === 0 ? " work-card-featured" : ""}`} key={project.href}>
+                  <div className="work-card-top"><span>{project.number} / {project.category}</span><ArrowUpRight size={22} strokeWidth={1.5} /></div>
+                  <h3>{project.name}</h3>
+                  <p>{project.description}</p>
+                  <div className="work-tags" aria-label="Technologies">
+                    {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                  </div>
+                  <a href={project.href} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.name} on GitHub`}>
+                    Explore project <ArrowUpRight size={17} />
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="contact" className="contact wrap section-grid" aria-labelledby="contact-title">
-          <div className="section-label"><span>04 / CONTACT</span><span className="label-line" /></div>
+          <div className="section-label"><span>05 / CONTACT</span><span className="label-line" /></div>
           <div>
             <h2 id="contact-title">Let’s <span>connect.</span></h2>
             <p className="contact-copy">Find me on LinkedIn, GitHub, or LeetCode, or get in touch by email.</p>
