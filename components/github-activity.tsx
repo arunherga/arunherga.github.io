@@ -2,12 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Code2 } from "lucide-react";
+import { ActivityCalendar } from "./activity-calendar";
 
 type GitHubEvent = {
   id: string;
   type: string;
   created_at: string;
   repo?: { name?: string };
+};
+
+type GitHubCalendar = {
+  days: Array<{ date: string; count: number; level: number }>;
+  total: number;
+  from: string;
+  to: string;
 };
 
 const activityLabels: Record<string, string> = {
@@ -22,6 +30,8 @@ const activityLabels: Record<string, string> = {
 export function GitHubActivity({ username }: { username: string }) {
   const [events, setEvents] = useState<GitHubEvent[] | null>(null);
   const [unavailable, setUnavailable] = useState(false);
+  const [calendar, setCalendar] = useState<GitHubCalendar | null>(null);
+  const [calendarUnavailable, setCalendarUnavailable] = useState(false);
   const profileUrl = `https://github.com/${encodeURIComponent(username)}`;
 
   useEffect(() => {
@@ -50,6 +60,22 @@ export function GitHubActivity({ username }: { username: string }) {
     }
 
     loadActivity();
+
+    async function loadCalendar() {
+      try {
+        const response = await fetch("/api/activity/github", { signal: controller.signal });
+        if (!response.ok) throw new Error("GitHub calendar unavailable");
+        const result = (await response.json()) as GitHubCalendar;
+        if (!Array.isArray(result.days) || !result.from || !result.to) {
+          throw new Error("Unexpected GitHub calendar response");
+        }
+        setCalendar(result);
+      } catch {
+        if (!controller.signal.aborted) setCalendarUnavailable(true);
+      }
+    }
+
+    loadCalendar();
     return () => controller.abort();
   }, [username]);
 
@@ -59,12 +85,28 @@ export function GitHubActivity({ username }: { username: string }) {
         <div className="activity-icon"><Code2 size={22} strokeWidth={1.7} /></div>
         <div>
           <span className="activity-kicker">LIVE FROM GITHUB</span>
-          <h3>Recent public activity</h3>
+          <h3>GitHub contributions</h3>
         </div>
         <a href={profileUrl} target="_blank" rel="noopener noreferrer" aria-label="View Arun's GitHub profile">
           View profile <ArrowUpRight size={17} />
         </a>
       </div>
+
+      <div className="calendar-summary">
+        {calendar ? `${calendar.total} contributions in the last year` : calendarUnavailable ? "Contribution calendar unavailable right now" : "Loading contribution calendar…"}
+      </div>
+      {calendar && (
+        <ActivityCalendar
+          days={calendar.days}
+          startDate={calendar.from}
+          endDate={calendar.to}
+          label={`${calendar.total} GitHub contributions in the last year`}
+          unit="contribution"
+          tone="github"
+        />
+      )}
+
+      <h4 className="recent-heading">Recent public events</h4>
 
       {events?.length ? (
         <ul className="activity-list">

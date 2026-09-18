@@ -6,9 +6,11 @@ import {
   Layers3,
   Mail,
   Terminal,
+  Trophy,
   Workflow,
 } from "lucide-react";
 import { GitHubActivity } from "@/components/github-activity";
+import { LeetCodeActivity } from "@/components/leetcode-activity";
 
 const focus = [
   { number: "01", icon: Layers3, title: "Reliable foundations", text: "Infrastructure that gives teams a dependable place to build, run, and grow." },
@@ -19,6 +21,7 @@ const focus = [
 const contacts = [
   { label: "LinkedIn", detail: "Connect professionally", href: "https://www.linkedin.com/in/arunbbhat/", icon: BriefcaseBusiness, external: true },
   { label: "GitHub", detail: "Explore public work", href: "https://github.com/arunherga", icon: Code2, external: true },
+  { label: "LeetCode", detail: "See problem solving", href: "https://leetcode.com/u/arunHerga/", icon: Trophy, external: true },
   { label: "arun.b.bhat@gmail.com", detail: "Send an email", href: "mailto:arun.b.bhat@gmail.com", icon: Mail, external: false },
 ];
 
@@ -66,8 +69,20 @@ export default function Home() {
           </div>
         </div>
 
+        <section id="activity" className="activity wrap section-grid" aria-labelledby="activity-title">
+          <div className="section-label"><span>01 / ACTIVITY</span><span className="label-line" /></div>
+          <div>
+            <h2 id="activity-title">The work in <span>motion.</span></h2>
+            <p className="activity-intro">GitHub contributions and LeetCode practice, shown here from my public profiles.</p>
+            <div className="activity-panels">
+              <GitHubActivity username="arunherga" />
+              <LeetCodeActivity />
+            </div>
+          </div>
+        </section>
+
         <section id="about" className="about wrap section-grid" aria-labelledby="about-title">
-          <div className="section-label"><span>01 / ABOUT</span><span className="label-line" /></div>
+          <div className="section-label"><span>02 / ABOUT</span><span className="label-line" /></div>
           <div>
             <h2 id="about-title">Behind every great product,<br/>a strong <span>foundation.</span></h2>
             <div className="about-copy">
@@ -78,7 +93,7 @@ export default function Home() {
         </section>
 
         <section id="focus" className="focus wrap section-grid" aria-labelledby="focus-title">
-          <div className="section-label"><span>02 / THE FOCUS</span><span className="label-line" /></div>
+          <div className="section-label"><span>03 / THE FOCUS</span><span className="label-line" /></div>
           <div>
             <h2 id="focus-title" className="focus-heading">Make the complex<br/>feel straightforward.</h2>
             <div className="focus-list">
@@ -93,20 +108,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="activity" className="activity wrap section-grid" aria-labelledby="activity-title">
-          <div className="section-label"><span>03 / ACTIVITY</span><span className="label-line" /></div>
-          <div>
-            <h2 id="activity-title">The work in <span>motion.</span></h2>
-            <p className="activity-intro">A look at recent public work and contributions on GitHub.</p>
-            <GitHubActivity username="arunherga" />
-          </div>
-        </section>
-
         <section id="contact" className="contact wrap section-grid" aria-labelledby="contact-title">
           <div className="section-label"><span>04 / CONTACT</span><span className="label-line" /></div>
           <div>
             <h2 id="contact-title">Let’s <span>connect.</span></h2>
-            <p className="contact-copy">Find me on LinkedIn or GitHub, or get in touch by email.</p>
+            <p className="contact-copy">Find me on LinkedIn, GitHub, or LeetCode, or get in touch by email.</p>
             <div className="contact-links">
               {contacts.map(({ label, detail, href, icon: Icon, external }) => (
                 <a
