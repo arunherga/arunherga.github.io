@@ -1,5 +1,4 @@
 import {
-  ArrowDown,
   ArrowUpRight,
   Code2,
   BriefcaseBusiness,
@@ -9,6 +8,7 @@ import {
   Trophy,
   Workflow,
 } from "lucide-react";
+import Link from "next/link";
 import { GitHubActivity } from "@/components/github-activity";
 import { LeetCodeActivity } from "@/components/leetcode-activity";
 
@@ -16,33 +16,6 @@ const focus = [
   { number: "01", icon: Layers3, title: "Reliable foundations", text: "Infrastructure that gives teams a dependable place to build, run, and grow." },
   { number: "02", icon: Workflow, title: "Less friction. More flow.", text: "Automation that connects the steps between an idea and running software." },
   { number: "03", icon: Terminal, title: "Developers first", text: "Clear interfaces, useful tooling, and a simpler path through everyday complexity." },
-];
-
-const projects = [
-  {
-    number: "01",
-    name: "kgrep",
-    category: "KAFKA TOOLING",
-    description: "A command-line tool for searching, watching, and exporting Kafka topic records without writing a one-off consumer. It also helps inspect topics and consumer-group lag.",
-    tags: ["Go", "Apache Kafka", "CLI", "Schema Registry"],
-    href: "https://github.com/arunherga/kgrep",
-  },
-  {
-    number: "02",
-    name: "confluent-terraform-mock",
-    category: "INFRASTRUCTURE SANDBOX",
-    description: "A local Confluent Cloud stand-in that lets you run real Terraform plan, apply, and destroy workflows without touching a live cloud account.",
-    tags: ["Go", "Terraform", "Confluent Cloud"],
-    href: "https://github.com/arunherga/confluent-terraform-mock",
-  },
-  {
-    number: "03",
-    name: "KafkaEndToEndLatency",
-    category: "OBSERVABILITY",
-    description: "A Kafka latency profiler that measures time between message timestamps and reports topic-wide and per-partition results to Kafka or CSV.",
-    tags: ["Python", "Apache Kafka", "Latency"],
-    href: "https://github.com/arunherga/KafkaEndToEndLatency",
-  },
 ];
 
 const contacts = [
@@ -65,23 +38,35 @@ export default function Home() {
           <a href="#about">About</a>
           <a href="#focus">Focus</a>
           <a href="#activity">Activity</a>
-          <a href="#work">Work</a>
+          <Link href="/work">Work <ArrowUpRight size={15} /></Link>
           <a href="#contact">Contact <ArrowUpRight size={15} /></a>
         </nav>
       </header>
 
       <main id="main">
         <section className="hero wrap" id="top" aria-labelledby="hero-title">
-          <div className="eyebrow">
-            <span className="tiny-cross" aria-hidden="true">+</span> ARUN BALAKRISHNA BHAT
-            <span className="eyebrow-tail">/ PERSONAL PORTFOLIO</span>
+          <div className="hero-frame">
+            <div className="hero-status">
+              <span className="terminal-label"><span className="status-dot" /> PROFILE.SYS / ONLINE</span>
+              <dl>
+                <div><dt>ROLE</dt><dd>Platform Engineer</dd></div>
+                <div><dt>FOCUS</dt><dd>Reliable infrastructure</dd></div>
+                <div><dt>BUILDS</dt><dd>Kafka · Terraform · Developer tools</dd></div>
+              </dl>
+              <span className="terminal-cursor" aria-hidden="true" />
+            </div>
+            <div className="hero-main">
+              <p className="hero-kicker">ENGINEERING THE FOUNDATION</p>
+              <h1 id="hero-title">ARUN<br/>BALAKRISHNA<br/><span>BHAT<span className="period">.</span></span></h1>
+              <p className="hero-description">I build the platforms and tools that help software teams move with confidence.</p>
+              <div className="hero-actions">
+                <Link className="button-primary" href="/work">Explore my work <ArrowUpRight size={18} /></Link>
+                <a className="button-secondary" href="#contact">Get in touch <ArrowUpRight size={18} /></a>
+              </div>
+            </div>
+            <div className="hero-seal" aria-hidden="true"><span>ab.</span></div>
           </div>
-          <h1 id="hero-title">Platform<br/><span className="engineer">engineer<span className="period">.</span></span></h1>
-          <div className="hero-bottom">
-            <p>The foundation behind<br/>what comes next.</p>
-            <a className="round-link" href="#about" aria-label="Explore about Arun"><ArrowDown size={24} /></a>
-            <span className="hero-note">INFRASTRUCTURE<br/>AUTOMATION<br/>DEVELOPER EXPERIENCE</span>
-          </div>
+          <div className="hero-footnote"><span>ARUN@PORTFOLIO:~$ ./build-the-platform</span><span>SCROLL TO EXPLORE ↓</span></div>
         </section>
 
         <div className="system-strip">
@@ -136,31 +121,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="work" className="work wrap section-grid" aria-labelledby="work-title">
-          <div className="section-label"><span>04 / SELECTED WORK</span><span className="label-line" /></div>
-          <div>
-            <h2 id="work-title">Tools built for <span>real problems.</span></h2>
-            <p className="work-intro">A few projects across Kafka, infrastructure, and developer tooling.</p>
-            <div className="work-list">
-              {projects.map((project, index) => (
-                <article className={`work-card${index === 0 ? " work-card-featured" : ""}`} key={project.href}>
-                  <div className="work-card-top"><span>{project.number} / {project.category}</span><ArrowUpRight size={22} strokeWidth={1.5} /></div>
-                  <h3>{project.name}</h3>
-                  <p>{project.description}</p>
-                  <div className="work-tags" aria-label="Technologies">
-                    {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
-                  </div>
-                  <a href={project.href} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.name} on GitHub`}>
-                    Explore project <ArrowUpRight size={17} />
-                  </a>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section id="contact" className="contact wrap section-grid" aria-labelledby="contact-title">
-          <div className="section-label"><span>05 / CONTACT</span><span className="label-line" /></div>
+          <div className="section-label"><span>04 / CONTACT</span><span className="label-line" /></div>
           <div>
             <h2 id="contact-title">Let’s <span>connect.</span></h2>
             <p className="contact-copy">Find me on LinkedIn, GitHub, or LeetCode, or get in touch by email.</p>
