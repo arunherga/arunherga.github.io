@@ -25,9 +25,23 @@ const contacts = [
   { label: "arun.b.bhat@gmail.com", detail: "Send an email", href: "mailto:arun.b.bhat@gmail.com", icon: Mail, external: false },
 ];
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Arun Balakrishna Bhat",
+  jobTitle: "Platform Engineer",
+  url: "https://arunbhat.com",
+  sameAs: [
+    "https://www.linkedin.com/in/arunbbhat/",
+    "https://github.com/arunherga",
+    "https://leetcode.com/u/arunHerga/",
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-header wrap">
         <a className="brand" href="#top" aria-label="Arun Balakrishna Bhat home">

@@ -6,6 +6,21 @@ import { PortfolioTerminal } from "@/components/portfolio-terminal";
 export const metadata: Metadata = {
   title: "Selected Work — Arun Balakrishna Bhat",
   description: "Selected platform engineering projects by Arun Balakrishna Bhat, including kgrep, confluent-terraform-mock, and KafkaEndToEndLatency.",
+  alternates: { canonical: "/work" },
+  openGraph: {
+    type: "website",
+    url: "/work",
+    siteName: "Arun Balakrishna Bhat",
+    title: "Selected Work — Arun Balakrishna Bhat",
+    description: "Explore kgrep, confluent-terraform-mock, and KafkaEndToEndLatency: platform engineering projects by Arun Balakrishna Bhat.",
+    images: [{ url: "/og-work.png", width: 1200, height: 630, alt: "Selected work by Arun Balakrishna Bhat" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Selected Work — Arun Balakrishna Bhat",
+    description: "Kafka tooling, infrastructure automation, and developer tools by Arun Balakrishna Bhat.",
+    images: ["/og-work.png"],
+  },
 };
 
 const projects = [
