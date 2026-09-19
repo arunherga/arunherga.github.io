@@ -3,7 +3,7 @@ import "./globals.css";
 
 const title = "Arun Balakrishna Bhat — Platform Engineer";
 const description =
-  "Arun Balakrishna Bhat is a platform engineer focused on reliable infrastructure, Apache Kafka tooling, automation, and developer experience.";
+  "Arun Balakrishna Bhat is a platform engineer in Udupi, India, building streaming infrastructure with Kafka, Kubernetes, Terraform, Go, and Python.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://arunbhat.com"),
@@ -19,6 +19,10 @@ export const metadata: Metadata = {
     "platform engineering",
     "Apache Kafka",
     "Terraform",
+    "Kubernetes",
+    "Go",
+    "Python",
+    "Udupi",
     "developer tools",
   ],
   alternates: { canonical: "/" },

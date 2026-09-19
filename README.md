@@ -1,6 +1,10 @@
 # Arun Balakrishna Bhat — portfolio
 
-The source for [arunbhat.com](https://arunbhat.com), built with Next.js and exported as static files for GitHub Pages. It has a home page, a separate [Work](https://arunbhat.com/work/) page, a portfolio terminal, contact links, and GitHub and LeetCode activity panels.
+The source for [arunbhat.com](https://arunbhat.com), built with Next.js and exported as static files for GitHub Pages. It has a home page, a separate [Work](https://arunbhat.com/work/) page, an interactive portfolio terminal, skills and certifications, contact links, and GitHub and LeetCode activity panels.
+
+Profile details, skills, certifications, and projects live in `lib/portfolio.ts`. Skills and credentials are based on [Arun's profile README](https://github.com/arunherga/arunherga). The design uses a light technical canvas and a green terminal, inspired by [sathish404.com](https://sathish404.com/).
+
+The Terminal button opens a full-screen portfolio interface. Try `help`, `skills`, `certifications`, `projects`, or `cd work`; Tab completes commands, arrow keys recall history, and Escape returns to the visual site. On phones, the UI Mode button closes the terminal.
 
 ## Run locally
 
@@ -30,7 +34,7 @@ If `www.arunbhat.com` should work too, point its `CNAME` to `arunherga.github.io
 
 ## Activity panels
 
-`scripts/generate-activity.mjs` gathers public GitHub contributions and LeetCode submission data and writes static JSON snapshots under `public/activity/`. The build refreshes these snapshots. If either source is temporarily unavailable, the build keeps the last committed snapshot. The panels show activity on the home page without sending visitors to another site. GitHub Actions may disable scheduled workflows after 60 days without repository activity on a public repository; a new commit or a manual workflow run restores refreshing.
+`scripts/generate-activity.mjs` gathers public GitHub contributions and LeetCode submission data and writes static JSON snapshots under `public/activity/`. The build refreshes these snapshots. If either source is temporarily unavailable, the build keeps the last committed snapshot. The panels show activity on the home page without sending visitors to another site. GitHub Actions may disable scheduled workflows after 60 days without repository activity on a public repository; if this happens, re-enable the workflow in the Actions tab.
 
 ## Checks
 
