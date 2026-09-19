@@ -2,7 +2,7 @@
 
 The source for [arunbhat.com](https://arunbhat.com), built with Next.js and exported as static files for GitHub Pages. It has a home page, a separate [Work](https://arunbhat.com/work/) page, an interactive portfolio terminal, skills and certifications, contact links, and GitHub and LeetCode activity panels.
 
-Profile details, skills, certifications, and projects live in `lib/portfolio.ts`. Skills and credentials are based on [Arun's profile README](https://github.com/arunherga/arunherga). The design uses a light technical canvas and a green terminal, inspired by [sathish404.com](https://sathish404.com/).
+Profile details, skills, certifications, and projects live in `lib/portfolio.ts`. Skills and credentials are based on [Arun's profile README](https://github.com/arunherga/arunherga) and his verified [Microsoft Certified: Azure Fundamentals credential](https://learn.microsoft.com/en-us/users/arunbalakrishnabhat-2012/credentials/f2cd424cf6b1a573). The design uses a light technical canvas and a green terminal, inspired by [sathish404.com](https://sathish404.com/).
 
 The Terminal button opens a full-screen portfolio interface. Try `help`, `skills`, `certifications`, `projects`, or `cd work`; Tab completes commands, arrow keys recall history, and Escape returns to the visual site. On phones, the UI Mode button closes the terminal.
 

@@ -8,7 +8,7 @@ export const profile = {
   leetcode: "https://leetcode.com/u/arunHerga/",
 };
 
-// Skills and credentials from github.com/arunherga/arunherga/README.md.
+// Skills and credentials from the GitHub profile and verified credential links.
 export const skillGroups = [
   { title: "Code & automation", id: "01", skills: [{ name: "Python", mark: "Py" }, { name: "Go", mark: "Go" }, { name: "Bash / Shell", mark: "$_" }] },
   { title: "Systems & containers", id: "02", skills: [{ name: "Linux", mark: "Lx" }, { name: "Docker", mark: "Dk" }, { name: "Docker Compose", mark: "Dc" }, { name: "Kubernetes", mark: "K8s" }] },
@@ -18,6 +18,7 @@ export const skillGroups = [
 
 export const certifications = [
   { short: "CKA", name: "Certified Kubernetes Administrator", issuer: "The Linux Foundation", href: "https://www.credly.com/badges/91a94e2d-a6af-4ea6-8b78-d5bf4d597584" },
+  { short: "AZ-900", name: "Microsoft Certified: Azure Fundamentals", issuer: "Microsoft", href: "https://learn.microsoft.com/en-us/users/arunbalakrishnabhat-2012/credentials/f2cd424cf6b1a573" },
   { short: "CCDAK", name: "Confluent Certified Developer for Apache Kafka", issuer: "Confluent", href: "https://www.credential.net/dad704fd-6219-467a-afec-2a17214ff24c" },
   { short: "DSE", name: "Data Streaming Engineer Foundations", issuer: "Confluent", href: "https://certificates.confluent.io/b69ad703-8c97-432f-ab12-7f4ceb86690a" },
 ];
