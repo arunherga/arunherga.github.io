@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { PortfolioTerminal } from "./portfolio-terminal";
+import { profile } from "@/lib/portfolio";
 
 export function SiteHeader({ work = false }: { work?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,9 +12,9 @@ export function SiteHeader({ work = false }: { work?: boolean }) {
   return (
     <header className="site-header">
       <div className="header-inner wrap">
-        <Link className="brand" href="/" aria-label="Arun Balakrishna Bhat home">
+        <Link className="brand" href="/" aria-label={`${profile.name} home`}>
           <span className="brand-mark" aria-hidden="true">ab<span>_</span></span>
-          <span className="brand-name">Arun Balakrishna Bhat<span>PLATFORM ENGINEER</span></span>
+          <span className="brand-name">{profile.name}<span>PLATFORM ENGINEER</span></span>
         </Link>
         <nav className={menuOpen ? "main-nav is-open" : "main-nav"} aria-label="Main navigation">
           {[{ label: "Home", href: `${home}#top` }, { label: "About", href: `${home}#about` }, { label: "Skills", href: `${home}#skills` }, { label: "Activity", href: `${home}#activity` }].map((item) => (

@@ -1,10 +1,16 @@
-# Arun Balakrishna Bhat — portfolio
+# Arun Bhat — portfolio
 
 The source for [arunbhat.com](https://arunbhat.com), built with Next.js and exported as static files for GitHub Pages. It has a home page, a separate [Work](https://arunbhat.com/work/) page, an interactive portfolio terminal, skills and certifications, contact links, and GitHub and LeetCode activity panels.
 
 Profile details, skills, certifications, and projects live in `lib/portfolio.ts`. Skills and credentials are based on [Arun's profile README](https://github.com/arunherga/arunherga) and his verified [Microsoft Certified: Azure Fundamentals credential](https://learn.microsoft.com/en-us/users/arunbalakrishnabhat-2012/credentials/f2cd424cf6b1a573). The design uses a light technical canvas and a green terminal, inspired by [sathish404.com](https://sathish404.com/).
 
 The Terminal button opens a full-screen portfolio interface. Try `help`, `skills`, `certifications`, `projects`, or `cd work`; Tab completes commands, arrow keys recall history, and Escape returns to the visual site. On phones, the UI Mode button closes the terminal.
+
+## Project walkthrough
+
+The Work page includes an 18-second conceptual walkthrough made with [Remotion Player](https://www.remotion.dev/docs/player). `components/work-film-frame.tsx` contains the visuals and three chapters; `components/work-film-player.tsx` connects them to Remotion's frame clock. The player is dynamically imported only after a visitor clicks the static poster. There is no video render service or third-party media request, so GitHub Pages continues to serve the whole site.
+
+Playback has pause, seek, fullscreen, and chapter controls. It pauses when scrolled out of view or when the tab is hidden. Reduced-motion visitors get a paused player with still chapter diagrams. A text walkthrough and all project descriptions remain available without playback. Keep `remotion` and `@remotion/player` on matching, exact versions when updating.
 
 ## Run locally
 

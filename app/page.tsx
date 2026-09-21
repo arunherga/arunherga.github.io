@@ -45,7 +45,7 @@ export default function Home() {
             </div>
             <div className="hero-heading">
               <p className="eyebrow"><span className="small-hex" aria-hidden="true">⬡</span> PLATFORM ENGINEER</p>
-              <h1 id="hero-title">ARUN<br />BALAKRISHNA<br /><span>BHAT<span className="name-cursor" aria-hidden="true">_</span></span></h1>
+              <h1 id="hero-title" aria-label={profile.name}>ARUN<br /><span>BHAT<span className="name-cursor" aria-hidden="true">_</span></span></h1>
               <p className="hero-tagline">Building the platforms <br />behind the data.</p>
             </div>
             <div className="hero-orbit" aria-hidden="true"><div className="orbit-ring" /><div className="orbit-ring inner" /><div className="orbit-logo">ab<span>.</span></div><span className="orbit-coordinate">AB / SYS</span></div>
@@ -60,7 +60,7 @@ export default function Home() {
         </section>
 
         <section id="about" className="section wrap about-section" aria-labelledby="about-title">
-          <div className="section-heading centered"><span className="eyebrow">01 / ABOUT</span><h2 id="about-title">The engineer behind the platform.</h2><p>I’m Arun Balakrishna Bhat, a platform engineer in Udupi, India. I build and run the streaming infrastructure that data products sit on—and write the tools that make those platforms easier to operate.</p></div>
+          <div className="section-heading centered"><span className="eyebrow">01 / ABOUT</span><h2 id="about-title">The engineer behind the platform.</h2><p>I’m {profile.name}, a platform engineer in Udupi, India. I build and run the streaming infrastructure that data products sit on—and write the tools that make those platforms easier to operate.</p></div>
           <div className="focus-grid">{areas.map(({ icon: Icon, title, text }) => <article className="focus-card" key={title}><span className="square-icon"><Icon size={23} strokeWidth={1.6} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
           <div className="about-note"><Terminal size={17} /><p>Ask me about Kafka internals, consumer lag, Schema Registry, or writing your own Terraform provider.</p></div>
         </section>
