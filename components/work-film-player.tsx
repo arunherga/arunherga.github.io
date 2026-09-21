@@ -4,19 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import { Player, type PlayerRef } from "@remotion/player";
 import { useCurrentFrame } from "remotion";
 import { Maximize, Pause, Play, RotateCcw } from "lucide-react";
-import { CHAPTER_FRAMES, FILM_FPS, FILM_FRAMES, filmChapters, WorkFilmFrame } from "./work-film-frame";
+import { CHAPTER_FRAMES, FILM_FPS, FILM_FRAMES, FILM_SECONDS, filmChapters, formatFilmTime } from "@/lib/work-film";
+import { WorkFilmFrame } from "./work-film-frame";
 
 function WorkComposition({ reducedMotion }: { reducedMotion: boolean }) {
   return <WorkFilmFrame frame={useCurrentFrame()} reducedMotion={reducedMotion} />;
 }
 
-export default function WorkFilmPlayer({ reducedMotion }: { reducedMotion: boolean }) {
+export default function WorkFilmPlayer({ reducedMotion, initialChapter = 0 }: { reducedMotion: boolean; initialChapter?: number }) {
   const playerRef = useRef<PlayerRef>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [frame, setFrame] = useState(0);
+  const startFrame = initialChapter * CHAPTER_FRAMES + (reducedMotion ? filmChapters[initialChapter].previewFrame : 0);
+  const [frame, setFrame] = useState(startFrame);
   const [playing, setPlaying] = useState(!reducedMotion);
   const [fullscreenError, setFullscreenError] = useState(false);
-  const chapter = Math.min(2, Math.floor(frame / CHAPTER_FRAMES));
+  const chapter = Math.min(filmChapters.length - 1, Math.floor(frame / CHAPTER_FRAMES));
 
   useEffect(() => { if (reducedMotion) playerRef.current?.pause(); }, [reducedMotion]);
 
@@ -65,6 +67,7 @@ export default function WorkFilmPlayer({ reducedMotion }: { reducedMotion: boole
       compositionWidth={960}
       compositionHeight={600}
       fps={FILM_FPS}
+      initialFrame={startFrame}
       controls={false}
       clickToPlay
       autoPlay={!reducedMotion}
@@ -74,19 +77,19 @@ export default function WorkFilmPlayer({ reducedMotion }: { reducedMotion: boole
       numberOfSharedAudioTags={0}
       moveToBeginningWhenEnded={false}
       style={{ width: "100%", aspectRatio: "8 / 5" }}
-      errorFallback={() => <div className="film-error">The walkthrough could not play. You can read about all three projects below.</div>}
+      errorFallback={() => <div className="film-error">The walkthrough could not play. You can read about all the projects below.</div>}
     />
     </div>
     <div className="film-controls" aria-label="Playback controls">
       <button type="button" aria-label={playing ? "Pause walkthrough" : "Play walkthrough"} onClick={() => playerRef.current?.toggle()}>{playing ? <Pause size={18} /> : <Play size={18} />}</button>
       <button type="button" aria-label="Restart walkthrough" onClick={() => { playerRef.current?.seekTo(0); playerRef.current?.play(); }}><RotateCcw size={16} /></button>
-      <input type="range" min="0" max={FILM_FRAMES - 1} value={frame} aria-label="Walkthrough position" aria-valuetext={`${Math.round(frame / FILM_FPS)} of 18 seconds`} onChange={(event) => { playerRef.current?.pause(); playerRef.current?.seekTo(Number(event.target.value)); }} />
-      <span className="film-time" aria-hidden="true">0:{String(Math.round(frame / FILM_FPS)).padStart(2, "0")} / 0:18</span>
+      <input type="range" min="0" max={FILM_FRAMES - 1} value={frame} aria-label="Walkthrough position" aria-valuetext={`${Math.round(frame / FILM_FPS)} of ${FILM_SECONDS} seconds`} onChange={(event) => { playerRef.current?.pause(); playerRef.current?.seekTo(Number(event.target.value)); }} />
+      <span className="film-time" aria-hidden="true">{formatFilmTime(Math.round(frame / FILM_FPS))} / {formatFilmTime(FILM_SECONDS)}</span>
       <button type="button" aria-label="Toggle walkthrough fullscreen" onClick={toggleFullscreen}><Maximize size={17} /></button>
     </div>
     {fullscreenError && <p className="film-control-note" role="status">Fullscreen is unavailable in this browser. The walkthrough can still play here.</p>}
     <div className="film-chapters" aria-label="Walkthrough chapters">
-      {filmChapters.map((item, index) => <button type="button" key={item.label} aria-current={chapter === index ? "step" : undefined} onClick={() => { playerRef.current?.pause(); playerRef.current?.seekTo(index * CHAPTER_FRAMES + 30); }}><span>0{index + 1}</span>{item.label}</button>)}
+      {filmChapters.map((item, index) => <button type="button" key={item.label} aria-current={chapter === index ? "step" : undefined} onClick={() => { playerRef.current?.seekTo(index * CHAPTER_FRAMES + (reducedMotion ? item.previewFrame : 0)); if (reducedMotion) playerRef.current?.pause(); else playerRef.current?.play(); }}><span>0{index + 1}</span>{item.label}</button>)}
     </div>
   </div>;
 }

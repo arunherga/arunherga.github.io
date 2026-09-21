@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { GitHubActivity } from "@/components/github-activity";
 import { LeetCodeActivity } from "@/components/leetcode-activity";
+import { HeroSignal } from "@/components/hero-signal";
 import { certifications, profile, skillGroups } from "@/lib/portfolio";
 
 const areas = [
@@ -56,6 +57,7 @@ export default function Home() {
             <span className="hero-prompt">arun@portfolio:~$ ./build-the-platform</span>
             <div className="social-icons"><a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={19} /></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={19} /></a><a href={`mailto:${profile.email}`} aria-label="Email Arun"><Mail size={19} /></a></div>
           </div>
+          <HeroSignal />
           <a className="scroll-cue" href="#about" aria-label="Scroll to about"><ArrowDown size={18} /></a>
         </section>
 
@@ -81,7 +83,7 @@ export default function Home() {
           <div className="activity-panels"><GitHubActivity username="arunherga" /><LeetCodeActivity /></div>
         </div></section>
 
-        <section className="work-callout wrap"><div><span className="eyebrow">BUILT IN THE OPEN</span><h2>Tools for real platform problems.</h2><p>Kafka search, infrastructure sandboxes, and latency profiling.</p></div><Link className="button-primary" href="/work/">View selected work <ArrowUpRight size={18} /></Link></section>
+        <section className="work-callout wrap"><div><span className="eyebrow">BUILT IN THE OPEN</span><h2>Tools for real platform problems.</h2><p>Kafka search, infrastructure sandboxes, latency profiling, and daily intelligence.</p></div><Link className="button-primary" href="/work/">View selected work <ArrowUpRight size={18} /></Link></section>
 
         <section id="contact" className="section wrap contact-section" aria-labelledby="contact-title">
           <div className="section-heading centered"><span className="eyebrow">05 / CONTACT</span><h2 id="contact-title">Let’s connect.</h2><p>Have a platform problem to talk through, a tool to build, or an idea to share? My inbox is open.</p></div>

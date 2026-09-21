@@ -14,9 +14,11 @@
   <path d="M72 423h1056" stroke="#476247" stroke-width="2"/>
   <text x="72" y="472" fill="#a8d372" font-family="Consolas,monospace" font-size="18">01</text>
   <text x="114" y="472" fill="#f1f7e9" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">kgrep</text>
-  <text x="401" y="472" fill="#a8d372" font-family="Consolas,monospace" font-size="18">02</text>
-  <text x="443" y="472" fill="#f1f7e9" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">confluent-terraform-mock</text>
+  <text x="608" y="472" fill="#c3acff" font-family="Consolas,monospace" font-size="18">02</text>
+  <text x="650" y="472" fill="#f1f7e9" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="700">confluent-terraform-mock</text>
   <text x="72" y="522" fill="#a8d372" font-family="Consolas,monospace" font-size="18">03</text>
   <text x="114" y="522" fill="#f1f7e9" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">KafkaEndToEndLatency</text>
+  <text x="608" y="522" fill="#7ce0cb" font-family="Consolas,monospace" font-size="18">04</text>
+  <text x="650" y="522" fill="#f1f7e9" font-family="Arial,Helvetica,sans-serif" font-size="24" font-weight="700">plastic-recycling-intelligence</text>
   <text x="1128" y="566" fill="#c3ed57" font-family="Consolas,monospace" font-size="18" text-anchor="end">arunbhat.com/work</text>
 </svg>

@@ -8,9 +8,11 @@ The Terminal button opens a full-screen portfolio interface. Try `help`, `skills
 
 ## Project walkthrough
 
-The Work page includes an 18-second conceptual walkthrough made with [Remotion Player](https://www.remotion.dev/docs/player). `components/work-film-frame.tsx` contains the visuals and three chapters; `components/work-film-player.tsx` connects them to Remotion's frame clock. The player is dynamically imported only after a visitor clicks the static poster. There is no video render service or third-party media request, so GitHub Pages continues to serve the whole site.
+The Work page includes a 32-second illustrated walkthrough made with [Remotion Player](https://www.remotion.dev/docs/player). Each project has its own scene in `components/work-scenes.tsx`: a searchable terminal for kgrep, a resource lifecycle for Terraform, a timing dashboard for Kafka latency, and a daily briefing for recycling intelligence. Chapter metadata and duration live in `lib/work-film.ts`; `components/work-film-player.tsx` connects the scenes to Remotion's frame clock. Visitors can choose a static project preview before loading the player. The player is dynamically imported only after a click. There is no video render service or third-party media request, so GitHub Pages continues to serve the whole site.
 
-Playback has pause, seek, fullscreen, and chapter controls. It pauses when scrolled out of view or when the tab is hidden. Reduced-motion visitors get a paused player with still chapter diagrams. A text walkthrough and all project descriptions remain available without playback. Keep `remotion` and `@remotion/player` on matching, exact versions when updating.
+Playback has pause, seek, fullscreen, and chapter controls. Choosing a chapter plays that project's scene; reduced-motion visitors see a finished still instead. Playback pauses when scrolled out of view or when the tab is hidden. A text walkthrough and all project descriptions remain available without playback. The latency numbers and records in the illustrations are sample data, not benchmarks or real activity. Keep `remotion` and `@remotion/player` on matching, exact versions when updating.
+
+The homepage's code/build/deploy/observe animation is CSS-only, in `components/hero-signal.tsx` and `app/globals.css`. Its small client controller supports pausing, reduced motion, hidden tabs and off-screen suspension; it does not import Remotion. Recycling project details come from its [repository README](https://github.com/arunherga/plastic-recycling-intelligence).
 
 ## Run locally
 
