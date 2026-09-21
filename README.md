@@ -1,4 +1,4 @@
-# Arun Bhat — portfolio
+# Arun Balakrishna Bhat — portfolio
 
 The source for [arunbhat.com](https://arunbhat.com), built with Next.js and exported as static files for GitHub Pages. It has a home page, a separate [Work](https://arunbhat.com/work/) page, an interactive portfolio terminal, skills and certifications, contact links, and GitHub and LeetCode activity panels.
 

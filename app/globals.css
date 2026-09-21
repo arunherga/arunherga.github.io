@@ -31,9 +31,6 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.name-cursor,.terminal-input-cursor{opacity:1}}
 
 /* Optional project walkthrough: the Remotion player loads after a click. */
-@media(min-width:901px){.hero-heading h1{font-size:clamp(76px,8.5vw,112px)}}
-@media(min-width:651px) and (max-width:900px){.hero-heading h1{font-size:72px}}
-@media(max-width:650px){.hero-heading h1{font-size:clamp(56px,16vw,88px)}}
 .work-showcase{margin-bottom:60px}
 .showcase-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
 .showcase-heading .eyebrow{margin-bottom:12px}

@@ -1,5 +1,5 @@
 export const profile = {
-  name: "Arun Bhat",
+  name: "Arun Balakrishna Bhat",
   role: "Platform Engineer",
   location: "Udupi, India",
   email: "arun.b.bhat@gmail.com",

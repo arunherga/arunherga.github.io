@@ -45,7 +45,7 @@ export default function Home() {
             </div>
             <div className="hero-heading">
               <p className="eyebrow"><span className="small-hex" aria-hidden="true">⬡</span> PLATFORM ENGINEER</p>
-              <h1 id="hero-title" aria-label={profile.name}>ARUN<br /><span>BHAT<span className="name-cursor" aria-hidden="true">_</span></span></h1>
+              <h1 id="hero-title" aria-label={profile.name}>ARUN<br />BALAKRISHNA<br /><span>BHAT<span className="name-cursor" aria-hidden="true">_</span></span></h1>
               <p className="hero-tagline">Building the platforms <br />behind the data.</p>
             </div>
             <div className="hero-orbit" aria-hidden="true"><div className="orbit-ring" /><div className="orbit-ring inner" /><div className="orbit-logo">ab<span>.</span></div><span className="orbit-coordinate">AB / SYS</span></div>

@@ -1,3 +1,5 @@
+import { profile } from "@/lib/portfolio";
+
 // Shared by the server-rendered poster and the on-demand Remotion composition.
 export const FILM_FPS = 30;
 export const CHAPTER_FRAMES = 180;
@@ -45,7 +47,7 @@ export function WorkFilmFrame({ frame = 45, reducedMotion = false }: { frame?: n
       <ellipse cx="480" cy="350" rx="440" ry="300" fill="url(#film-glow)" />
       <g fontFamily="Consolas, 'Liberation Mono', monospace">
         <circle cx="43" cy="40" r="5" fill="#c3ed78" />
-        <text x="60" y="47" fill="#c4d1bc" fontSize="19" letterSpacing="2">ARUN BHAT / FIELD NOTES</text>
+        <text x="60" y="47" fill="#c4d1bc" fontSize="19" letterSpacing="2">{profile.name.toUpperCase()} / FIELD NOTES</text>
         <text x="918" y="47" textAnchor="end" fill="#a4b698" fontSize="19">0{chapterIndex + 1} / 03</text>
         <path d="M40 70H920" stroke="#3b5039" />
         <g opacity={reveal} transform={`translate(0 ${reducedMotion ? 0 : (1 - reveal) * 10})`}>
