@@ -78,7 +78,7 @@
 .project-card[data-project="04"] .project-visual{background:linear-gradient(125deg,#e6f3ee,#f6fbf8);color:#447f72}
 .project-card[data-project="04"] .project-index{color:#7db8a4}
 .project-content h2{overflow-wrap:anywhere}
-.hero-signal{margin:28px 0 0;padding:14px 25px 18px;border:1px solid #e2e9dc;border-radius:3px;background:linear-gradient(115deg,#f3f7ee,#fff)}
+.hero-signal{grid-column:1/-1;min-width:0;margin:0;padding:18px 0 0;border-top:1px solid #dce6d2}
 .signal-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;font:9px/1.5 var(--mono);letter-spacing:1.5px;color:#6d8258}
 .signal-heading button{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:#4e683b;font:10px var(--mono);letter-spacing:0;cursor:pointer;padding:5px;white-space:nowrap}
 .signal-heading button:focus-visible{outline:2px solid #6e953e;outline-offset:3px}
@@ -94,4 +94,4 @@
 .hero-signal.is-paused *,.hero-signal.is-paused *:before{animation-play-state:paused}
 @keyframes signal-travel{from{transform:translateX(-8px)}to{transform:translateX(100%)}}
 @keyframes signal-node{0%,20%,100%{background:#f5f9f0;color:#6a8c48;box-shadow:0 0 0 0 #86b34b00}6%,12%{background:#e4efce;color:#3d5e25;box-shadow:0 0 0 6px #86b34b14;border-color:#8eaf64}}
-@media(max-width:650px){.film-chapters{grid-template-columns:repeat(2,minmax(0,1fr))}.film-chapters button{flex-direction:row;padding:12px 8px}.film-chapters button:nth-child(3){border-left:0}.film-chapters button:nth-child(n+3){border-top:1px solid #3b5039}.hero-signal{padding:12px 11px 15px;margin-top:22px}.signal-heading{font-size:7px;letter-spacing:.7px}.signal-heading button{font-size:9px}.signal-stage{font-size:9px}.signal-node{width:38px;height:38px}.signal-rail{top:10px}.signal-track{margin-top:15px}.film-player:fullscreen .film-stage{width:min(100%,calc((100dvh - 165px) * 1.6))}}
+@media(max-width:650px){.film-chapters{grid-template-columns:repeat(2,minmax(0,1fr))}.film-chapters button{flex-direction:row;padding:12px 8px}.film-chapters button:nth-child(3){border-left:0}.film-chapters button:nth-child(n+3){border-top:1px solid #3b5039}.hero-signal{padding-top:14px}.signal-heading{font-size:7px;letter-spacing:.7px}.signal-heading button{font-size:9px}.signal-stage{font-size:9px}.signal-node{width:38px;height:38px}.signal-rail{top:10px}.signal-track{margin-top:15px}.film-player:fullscreen .film-stage{width:min(100%,calc((100dvh - 165px) * 1.6))}}

@@ -50,6 +50,7 @@ export default function Home() {
               <p className="hero-tagline">Building the platforms <br />behind the data.</p>
             </div>
             <div className="hero-orbit" aria-hidden="true"><div className="orbit-ring" /><div className="orbit-ring inner" /><div className="orbit-logo">ab<span>.</span></div><span className="orbit-coordinate">AB / SYS</span></div>
+            <HeroSignal />
             <div className="hero-system-line"><span><i /> SYSTEM ONLINE</span><span>MODE <b>BUILD &amp; OPERATE</b></span><span>LOCATION <b>IN / UDUPI</b></span></div>
           </div>
           <div className="hero-bottom">
@@ -57,7 +58,6 @@ export default function Home() {
             <span className="hero-prompt">arun@portfolio:~$ ./build-the-platform</span>
             <div className="social-icons"><a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={19} /></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={19} /></a><a href={`mailto:${profile.email}`} aria-label="Email Arun"><Mail size={19} /></a></div>
           </div>
-          <HeroSignal />
           <a className="scroll-cue" href="#about" aria-label="Scroll to about"><ArrowDown size={18} /></a>
         </section>
 
