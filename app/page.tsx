@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowDown, ArrowUpRight, Award, Boxes, Code2, Database, GitBranch, Code2 as Github, BriefcaseBusiness as Linkedin, Mail, MapPin, Network, Terminal, Trophy } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -69,7 +70,7 @@ export default function Home() {
 
         <section id="skills" className="section section-tint" aria-labelledby="skills-title"><div className="wrap">
           <div className="section-heading"><span className="eyebrow">02 / SKILLS &amp; TOOLKIT</span><h2 id="skills-title">The tools I work with.</h2><p>From a shell script to a streaming platform. These are the languages, systems, and services in my toolkit.</p></div>
-          <div className="skill-groups">{skillGroups.map((group) => <article className="skill-group" key={group.id}><div className="skill-group-label"><span>{group.id}</span><h3>{group.title}</h3></div><div className="skill-tiles">{group.skills.map((skill) => <div className="skill-tile" key={skill.name}><span className="skill-mark" aria-hidden="true">{skill.mark}</span><span>{skill.name}</span></div>)}</div></article>)}</div>
+          <div className="skill-groups">{skillGroups.map((group) => <article className="skill-group" key={group.id}><div className="skill-group-label"><span>{group.id}</span><h3>{group.title}</h3></div><div className="skill-tiles">{group.skills.map((skill) => <div className="skill-tile" key={skill.name}><Image className="skill-logo" src={skill.icon} alt="" width={40} height={40} loading="lazy" unoptimized /><span>{skill.name}</span></div>)}</div></article>)}</div>
           <div className="skills-source"><GitBranch size={15} /><span>Also on my <a href="https://github.com/arunherga/arunherga" target="_blank" rel="noopener noreferrer">GitHub profile <ArrowUpRight size={13} /></a></span></div>
         </div></section>
 

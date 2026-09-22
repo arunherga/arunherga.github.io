@@ -10,10 +10,10 @@ export const profile = {
 
 // Skills supplied by Arun and his GitHub profile; credentials use verified links.
 export const skillGroups = [
-  { title: "Code & automation", id: "01", skills: [{ name: "Python", mark: "Py" }, { name: "Go", mark: "Go" }, { name: "Bash / Shell", mark: "$_" }, { name: "Ansible", mark: "An" }] },
-  { title: "Systems & containers", id: "02", skills: [{ name: "Linux", mark: "Lx" }, { name: "Docker", mark: "Dk" }, { name: "Docker Compose", mark: "Dc" }, { name: "Kubernetes", mark: "K8s" }] },
-  { title: "Cloud & infrastructure", id: "03", skills: [{ name: "Terraform", mark: "Tf" }, { name: "OpenTofu", mark: "Tofu" }, { name: "AWS", mark: "AWS" }, { name: "Azure", mark: "Az" }] },
-  { title: "Streaming & data", id: "04", skills: [{ name: "Apache Kafka", mark: "Kf" }, { name: "Temporal", mark: "Tm" }, { name: "MySQL", mark: "My" }, { name: "MS SQL Server", mark: "SQL" }] },
+  { title: "Code & automation", id: "01", skills: [{ name: "Python", icon: "/skills/python.svg" }, { name: "Go", icon: "/skills/go.svg" }, { name: "Bash / Shell", icon: "/skills/bash.svg" }, { name: "Ansible", icon: "/skills/ansible.svg" }] },
+  { title: "Systems & containers", id: "02", skills: [{ name: "Linux", icon: "/skills/linux.svg" }, { name: "Docker", icon: "/skills/docker.svg" }, { name: "Docker Compose", icon: "/skills/docker-compose.png" }, { name: "Kubernetes", icon: "/skills/kubernetes.svg" }] },
+  { title: "Cloud & infrastructure", id: "03", skills: [{ name: "Terraform", icon: "/skills/terraform.svg" }, { name: "OpenTofu", icon: "/skills/opentofu.svg" }, { name: "AWS", icon: "/skills/amazonwebservices.svg" }, { name: "Azure", icon: "/skills/azure.svg" }] },
+  { title: "Streaming & data", id: "04", skills: [{ name: "Apache Kafka", icon: "/skills/apachekafka.svg" }, { name: "Temporal", icon: "/skills/temporal.svg" }, { name: "MySQL", icon: "/skills/mysql.svg" }, { name: "MS SQL Server", icon: "/skills/microsoftsqlserver.svg" }] },
 ];
 
 export const certifications = [
