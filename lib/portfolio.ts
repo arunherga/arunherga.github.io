@@ -8,11 +8,11 @@ export const profile = {
   leetcode: "https://leetcode.com/u/arunHerga/",
 };
 
-// Skills and credentials from the GitHub profile and verified credential links.
+// Skills supplied by Arun and his GitHub profile; credentials use verified links.
 export const skillGroups = [
-  { title: "Code & automation", id: "01", skills: [{ name: "Python", mark: "Py" }, { name: "Go", mark: "Go" }, { name: "Bash / Shell", mark: "$_" }] },
+  { title: "Code & automation", id: "01", skills: [{ name: "Python", mark: "Py" }, { name: "Go", mark: "Go" }, { name: "Bash / Shell", mark: "$_" }, { name: "Ansible", mark: "An" }] },
   { title: "Systems & containers", id: "02", skills: [{ name: "Linux", mark: "Lx" }, { name: "Docker", mark: "Dk" }, { name: "Docker Compose", mark: "Dc" }, { name: "Kubernetes", mark: "K8s" }] },
-  { title: "Cloud & infrastructure", id: "03", skills: [{ name: "Terraform", mark: "Tf" }, { name: "AWS", mark: "AWS" }, { name: "Azure", mark: "Az" }] },
+  { title: "Cloud & infrastructure", id: "03", skills: [{ name: "Terraform", mark: "Tf" }, { name: "OpenTofu", mark: "Tofu" }, { name: "AWS", mark: "AWS" }, { name: "Azure", mark: "Az" }] },
   { title: "Streaming & data", id: "04", skills: [{ name: "Apache Kafka", mark: "Kf" }, { name: "Temporal", mark: "Tm" }, { name: "MySQL", mark: "My" }, { name: "MS SQL Server", mark: "SQL" }] },
 ];
 
