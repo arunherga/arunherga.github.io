@@ -45,3 +45,7 @@ next-env.d.ts
 /.codex/
 /outputs/
 /work/
+/private-reports/node_modules/
+/private-reports/.wrangler/
+/private-reports/.dev.vars*
+/private-reports/dist/

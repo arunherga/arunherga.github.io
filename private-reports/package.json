@@ -1,0 +1,16 @@
+{
+  "name": "arun-private-intelligence",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "preview": "node scripts/preview.js",
+    "check": "npm test && wrangler deploy --config wrangler.jsonc --dry-run --outdir dist",
+    "deploy": "wrangler deploy --config wrangler.jsonc",
+    "login": "wrangler login --config wrangler.jsonc"
+  },
+  "dependencies": { "jose": "^6.1.0" },
+  "devDependencies": { "wrangler": "^4.0.0" }
+}
