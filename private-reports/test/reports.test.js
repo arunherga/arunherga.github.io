@@ -70,6 +70,19 @@ test("server cache reuses source data without putting credentials into cache key
   for (let i = 0; i < 2; i++) await githubJSON("equity", "data/daily", { GITHUB_TOKEN: "test-secret" }, cache, fetcher);
   assert.equal(fetched, 1);
 });
+test("redirects are rejected without forwarding the GitHub credential", async () => {
+  let requests = 0;
+  await assert.rejects(githubJSON("equity", "data/daily", { GITHUB_TOKEN: "test-secret" }, undefined, async (url, options) => {
+    requests++;
+    assert.equal(options.redirect, "manual");
+    return new Response(null, { status: 302, headers: { Location: "https://untrusted.example/" } });
+  }), /could not be reached/);
+  assert.equal(requests, 1);
+});
+test("only an aborted or timed-out request is reported as a timeout", async () => {
+  await assert.rejects(githubJSON("equity", "data/daily", {}, undefined, async () => { throw new TypeError("Unsupported option"); }), /connection to GitHub/);
+  await assert.rejects(githubJSON("equity", "data/daily", {}, undefined, async () => { throw new DOMException("Timed out", "TimeoutError"); }), /taking too long/);
+});
 test("authorized API serves normalized and downloadable reports with correct dates", async () => {
   const handler = createHandler({ verify: async () => ({ email: "owner@example.com" }), read: async () => equity() });
   const result = await handler(new Request(`https://example.com/api/report?kind=equity&date=${date}`), {});

@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.13.0" },
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "test": "node --test test/*.test.js",
     "preview": "node scripts/preview.js",
@@ -11,6 +13,11 @@
     "deploy": "wrangler deploy --config wrangler.jsonc",
     "login": "wrangler login --config wrangler.jsonc"
   },
-  "dependencies": { "jose": "^6.1.0" },
-  "devDependencies": { "wrangler": "^4.0.0" }
+  "dependencies": {
+    "jose": "^6.1.0"
+  },
+  "devDependencies": {
+    "miniflare": "5.20260921.1-alpha",
+    "wrangler": "^4.0.0"
+  }
 }

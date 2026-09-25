@@ -97,8 +97,15 @@ export async function githubJSON(kind, path, env, cache, fetcher = fetch) {
   if (env.GITHUB_TOKEN) headers.Authorization = `Bearer ${env.GITHUB_TOKEN}`;
   let response;
   try {
-    response = await fetcher(url, { headers, redirect: "error", signal: AbortSignal.timeout(15000) });
-  } catch { throw new ReportError(502, "GitHub is taking too long to respond. Please try again shortly."); }
+    // Workers supports manual/follow, but rejects the browser's "error" mode.
+    // Keep redirects manual so credentials never follow an upstream redirect.
+    response = await fetcher(url, { headers, redirect: "manual", signal: AbortSignal.timeout(15000) });
+  } catch (error) {
+    const timedOut = ["TimeoutError", "AbortError"].includes(error?.name);
+    throw new ReportError(502, timedOut
+      ? "GitHub is taking too long to respond. Please try again shortly."
+      : "The connection to GitHub could not be completed. Please try again shortly.");
+  }
   if (!response.ok) {
     if (response.status === 404) throw new ReportError(404, "This report is not available in the repository.");
     if ([403, 429].includes(response.status)) throw new ReportError(503, "GitHub temporarily limited report requests. Please try again later.");
