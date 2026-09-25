@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" stroke="#326ce5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <title>Configuration layers</title>
+  <path d="m5 11 15-7 15 7-15 7-15-7Zm0 9 15 7 15-7M5 29l15 7 15-7"/>
+  <path d="M27 13v16M23 21h8" stroke="#172d50"/>
+  <circle cx="27" cy="21" r="3" fill="#fff" stroke="#172d50"/>
+</svg>

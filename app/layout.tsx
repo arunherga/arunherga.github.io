@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { profile } from "@/lib/portfolio";
 import "./globals.css";
 
-const title = `${profile.name} — Platform Engineer`;
+const title = `${profile.name} — ${profile.role}`;
 const description =
-  `${profile.name} is a platform engineer in Udupi, India, building streaming infrastructure with Kafka, Kubernetes, Terraform, Go, and Python.`;
+  `${profile.name} is a data platform engineer in Udupi, India, building Kafka and Debezium CDC pipelines, Kubernetes platforms, and reliable infrastructure with Terraform and GitOps.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://arunbhat.com"),
@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     profile.name,
     "platform engineer",
     "platform engineering",
+    "data platform engineer",
+    "data pipelines",
+    "Debezium CDC",
+    "Confluent",
+    "GitOps",
+    "SRE",
     "Apache Kafka",
     "Terraform",
     "Kubernetes",

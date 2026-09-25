@@ -6,13 +6,13 @@ import { SiteFooter } from "@/components/site-footer";
 import { GitHubActivity } from "@/components/github-activity";
 import { LeetCodeActivity } from "@/components/leetcode-activity";
 import { HeroSignal } from "@/components/hero-signal";
-import { certifications, profile, skillGroups } from "@/lib/portfolio";
+import { certifications, experience, profile, skillGroups } from "@/lib/portfolio";
 
 const areas = [
-  { icon: Network, title: "Streaming infrastructure", text: "Kafka internals, consumer lag, and Schema Registry—the systems and signals behind dependable data streams." },
-  { icon: Boxes, title: "Platforms that run", text: "Kubernetes, containers, and cloud infrastructure that give data products a place to operate." },
-  { icon: GitBranch, title: "Infrastructure as code", text: "Terraform workflows and provider tooling that make infrastructure easier to test and manage." },
-  { icon: Code2, title: "Tools for the operator", text: "Go, Python, and shell tools that turn everyday platform tasks into clear, repeatable workflows." },
+  { icon: Network, title: "Streaming & CDC pipelines", text: "Production data ingestion with Kafka, Confluent, and Debezium. Connector lifecycle, throughput tuning, and reliable data movement for analytics and operational systems." },
+  { icon: Boxes, title: "Kubernetes & GitOps", text: "Kafka and Strimzi on Kubernetes and EKS. Helm, Kustomize, and Flux CD for deployments, with Terraform and Ansible for repeatable infrastructure." },
+  { icon: GitBranch, title: "Reliability & operations", text: "Data-freshness monitoring, connector health, and centralized logging. On-call leadership, incident recovery, and root-cause analysis for production platforms." },
+  { icon: Code2, title: "Automation & integration", text: "Python and shell automation, Temporal workflows, and custom Java transforms for Kafka Connect. Go tools that make everyday platform operations easier." },
 ];
 
 const personJsonLd = {
@@ -38,15 +38,15 @@ export default function Home() {
             <div className="identity-panel">
               <p className="identity-title"><span className="status-dot" /> IDENTITY.SYS <span>{"// LOADED"}</span></p>
               <dl>
-                <div><dt>ROLE</dt><dd>Platform Engineer</dd></div>
+                <div><dt>ROLE</dt><dd>{profile.role}</dd></div>
                 <div><dt>BASE</dt><dd>Udupi, India</dd></div>
-                <div><dt>STACK</dt><dd>Kafka · Kubernetes<br />Terraform · Go · Python</dd></div>
-                <div><dt>FOCUS</dt><dd>Streaming infrastructure<br />&amp; developer tooling</dd></div>
+                <div><dt>STACK</dt><dd>Kafka · Debezium<br />Kubernetes · Terraform</dd></div>
+                <div><dt>FOCUS</dt><dd>Streaming &amp; CDC pipelines<br />Platform reliability</dd></div>
               </dl>
               <span className="identity-cursor" aria-hidden="true">▊ _</span>
             </div>
             <div className="hero-heading">
-              <p className="eyebrow"><span className="small-hex" aria-hidden="true">⬡</span> PLATFORM ENGINEER</p>
+              <p className="eyebrow"><span className="small-hex" aria-hidden="true">⬡</span> {profile.role.toUpperCase()}</p>
               <h1 id="hero-title" aria-label={profile.name}>ARUN<br />BALAKRISHNA<br /><span>BHAT<span className="name-cursor" aria-hidden="true">_</span></span></h1>
               <p className="hero-tagline">Building the platforms <br />behind the data.</p>
             </div>
@@ -55,7 +55,7 @@ export default function Home() {
             <div className="hero-system-line"><span><i /> SYSTEM ONLINE</span><span>MODE <b>BUILD &amp; OPERATE</b></span><span>LOCATION <b>IN / UDUPI</b></span></div>
           </div>
           <div className="hero-bottom">
-            <div className="hero-actions"><Link className="button-primary" href="/work/">Explore my work <ArrowUpRight size={17} /></Link><a className="button-text resume-link" href={profile.resume} download>Download resume <Download size={16} aria-hidden="true" /></a></div>
+            <div className="hero-actions"><Link className="button-primary" href="/work/">Explore my work <ArrowUpRight size={17} /></Link><a className="button-resume" href={profile.resume} download>Download my resume <Download size={17} aria-hidden="true" /></a></div>
             <span className="hero-prompt">arun@portfolio:~$ ./build-the-platform</span>
             <div className="social-icons"><a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={19} /></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={19} /></a><a href={`mailto:${profile.email}`} aria-label="Email Arun"><Mail size={19} /></a></div>
           </div>
@@ -63,15 +63,19 @@ export default function Home() {
         </section>
 
         <section id="about" className="section wrap about-section" aria-labelledby="about-title">
-          <div className="section-heading centered"><span className="eyebrow">01 / ABOUT</span><h2 id="about-title">The engineer behind the platform.</h2><p>I’m {profile.name}, a platform engineer in Udupi, India. I build and run the streaming infrastructure that data products sit on—and write the tools that make those platforms easier to operate.</p></div>
+          <div className="section-heading centered"><span className="eyebrow">01 / ABOUT</span><h2 id="about-title">The engineer behind the platform.</h2><p>I’m {profile.name}, a data platform engineer in Udupi, India. {profile.summary}</p></div>
           <div className="focus-grid">{areas.map(({ icon: Icon, title, text }) => <article className="focus-card" key={title}><span className="square-icon"><Icon size={23} strokeWidth={1.6} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
-          <div className="about-note"><Terminal size={17} /><p>Ask me about Kafka internals, consumer lag, Schema Registry, or writing your own Terraform provider.</p></div>
+          <div className="about-note"><Terminal size={17} /><p>Ask me about CDC performance, Kafka Connect, GitOps, or keeping a streaming platform reliable in production.</p></div>
+          <div className="experience-section" aria-labelledby="experience-title">
+            <div className="experience-heading"><div><p className="eyebrow">IN PRACTICE</p><h3 id="experience-title">Where I’ve put it to work.</h3></div><a className="button-text" href={profile.resume} target="_blank" rel="noopener noreferrer">Full resume <ArrowUpRight size={16} /></a></div>
+            <div className="experience-grid">{experience.map((job) => <article className="experience-card" key={job.company}><p className="experience-period">{job.period}</p><h4>{job.company}</h4><p className="experience-role">{job.role}</p><p className="experience-summary">{job.summary}</p><ul>{job.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul></article>)}</div>
+          </div>
         </section>
 
         <section id="skills" className="section section-tint" aria-labelledby="skills-title"><div className="wrap">
-          <div className="section-heading"><span className="eyebrow">02 / SKILLS &amp; TOOLKIT</span><h2 id="skills-title">The tools I work with.</h2><p>From a shell script to a streaming platform. These are the languages, systems, and services in my toolkit.</p></div>
-          <div className="skill-groups">{skillGroups.map((group) => <article className="skill-group" key={group.id}><div className="skill-group-label"><span>{group.id}</span><h3>{group.title}</h3></div><div className="skill-tiles">{group.skills.map((skill) => <div className="skill-tile" key={skill.name}><Image className="skill-logo" src={skill.icon} alt="" width={40} height={40} loading="lazy" unoptimized /><span>{skill.name}</span></div>)}</div></article>)}</div>
-          <div className="skills-source"><GitBranch size={15} /><span>Also on my <a href="https://github.com/arunherga/arunherga" target="_blank" rel="noopener noreferrer">GitHub profile <ArrowUpRight size={13} /></a></span></div>
+          <div className="section-heading"><span className="eyebrow">02 / SKILLS &amp; TOOLKIT</span><h2 id="skills-title">From ingestion to reliable operations.</h2><p>The tools I use to build data pipelines, automate infrastructure, and operate production platforms. Alongside the stack: data quality, performance tuning, capacity planning, and incident response.</p></div>
+          <div className="skill-groups">{skillGroups.map((group) => <article className="skill-group" key={group.id}><div className="skill-group-label"><span>{group.id}</span><div><h3>{group.title}</h3><p>{group.description}</p></div></div><div className="skill-tiles">{group.skills.map((skill) => <div className="skill-tile" key={skill.name}><Image className="skill-logo" src={skill.icon} alt="" width={40} height={40} loading="lazy" unoptimized /><span>{skill.name}</span></div>)}</div></article>)}</div>
+          <div className="skills-source"><GitBranch size={15} /><span>Explore my <a href={profile.resume} target="_blank" rel="noopener noreferrer">resume <ArrowUpRight size={13} /></a> and <a href="https://github.com/arunherga/arunherga" target="_blank" rel="noopener noreferrer">GitHub profile <ArrowUpRight size={13} /></a></span></div>
         </div></section>
 
         <section id="certifications" className="section wrap certifications" aria-labelledby="certifications-title">
