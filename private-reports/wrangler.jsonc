@@ -12,8 +12,8 @@
   },
   "vars": {
     "ALLOWED_EMAILS": "arun.b.bhat@gmail.com",
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
+    "ACCESS_TEAM_DOMAIN": "billowing-breeze-a9a2.cloudflareaccess.com",
+    "ACCESS_AUD": "ad669deffdf70842922ada6b265fd95c8a9b99a0f9b3a08da10e712e629442a5"
   },
   "observability": { "enabled": false }
 }
