@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight, Award, Boxes, Code2, Database, GitBranch, Code2 as Github, BriefcaseBusiness as Linkedin, Mail, MapPin, Network, Terminal, Trophy } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Award, Boxes, Code2, Database, Download, GitBranch, Code2 as Github, BriefcaseBusiness as Linkedin, Mail, MapPin, Network, Terminal, Trophy } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { GitHubActivity } from "@/components/github-activity";
@@ -55,7 +55,7 @@ export default function Home() {
             <div className="hero-system-line"><span><i /> SYSTEM ONLINE</span><span>MODE <b>BUILD &amp; OPERATE</b></span><span>LOCATION <b>IN / UDUPI</b></span></div>
           </div>
           <div className="hero-bottom">
-            <div className="hero-actions"><Link className="button-primary" href="/work/">Explore my work <ArrowUpRight size={17} /></Link><a className="button-text" href="#contact">Get in touch <ArrowUpRight size={16} /></a></div>
+            <div className="hero-actions"><Link className="button-primary" href="/work/">Explore my work <ArrowUpRight size={17} /></Link><a className="button-text resume-link" href={profile.resume} download>Download resume <Download size={16} aria-hidden="true" /></a></div>
             <span className="hero-prompt">arun@portfolio:~$ ./build-the-platform</span>
             <div className="social-icons"><a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={19} /></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={19} /></a><a href={`mailto:${profile.email}`} aria-label="Email Arun"><Mail size={19} /></a></div>
           </div>

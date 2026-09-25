@@ -6,6 +6,7 @@ export const profile = {
   github: "https://github.com/arunherga",
   linkedin: "https://www.linkedin.com/in/arunbbhat/",
   leetcode: "https://leetcode.com/u/arunHerga/",
+  resume: "/resume/Arun_Bhat_Resume_Data_Platform_Engineer.pdf",
 };
 
 // Skills supplied by Arun and his GitHub profile; credentials use verified links.
