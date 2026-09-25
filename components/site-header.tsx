@@ -21,6 +21,7 @@ export function SiteHeader({ work = false }: { work?: boolean }) {
             <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}</a>
           ))}
           <Link href="/work/" aria-current={work ? "page" : undefined} onClick={() => setMenuOpen(false)}>Work</Link>
+          <a href="https://arun-private-intelligence.arun-private-intelligence.workers.dev/" title="Private reports — sign-in required" onClick={() => setMenuOpen(false)}>Reports</a>
           <a href={`${home}#contact`} onClick={() => setMenuOpen(false)}>Contact</a>
         </nav>
         <div className="header-actions">
