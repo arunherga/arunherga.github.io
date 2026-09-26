@@ -15,7 +15,7 @@ export const skillGroups = [
   {
     title: "Streaming & integration", id: "01",
     description: "Kafka Connect, CDC ingestion, connector tuning, Schema Registry, and workflow orchestration.",
-    skills: [{ name: "Apache Kafka", icon: "/skills/apachekafka.svg" }, { name: "Confluent Platform", icon: "/skills/confluent.png" }, { name: "Confluent Cloud", icon: "/skills/confluent.png" }, { name: "Debezium CDC", icon: "/skills/debezium.svg" }, { name: "Strimzi", icon: "/skills/strimzi.svg" }, { name: "Temporal", icon: "/skills/temporal.svg" }],
+    skills: [{ name: "Apache Kafka", icon: "/skills/apachekafka.svg" }, { name: "Debezium CDC", icon: "/skills/debezium.svg" }, { name: "Strimzi", icon: "/skills/strimzi.svg" }, { name: "Temporal", icon: "/skills/temporal.svg" }],
   },
   {
     title: "Cloud & containers", id: "02",
