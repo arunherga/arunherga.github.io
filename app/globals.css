@@ -94,6 +94,11 @@
 .hero-signal.is-paused *,.hero-signal.is-paused *:before{animation-play-state:paused}
 /* Keep month labels in one reserved row, aligned with the weekday gutter. */
 .activity-calendar{--calendar-label-height:28px}.calendar-months{height:var(--calendar-label-height);grid-template-rows:16px;row-gap:0;align-items:start;line-height:16px}.calendar-months>span{grid-row:1;white-space:nowrap}.calendar-weekdays{padding-top:var(--calendar-label-height)}
+/* A brief wave plays when each calendar enters view; contribution colors stay unchanged. */
+@keyframes heatmap-reveal{from{opacity:.35;transform:translateY(3px) scale(.55)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:no-preference){.activity-calendar[data-revealed="true"] .heatmap-day:not(.is-outside){animation:heatmap-reveal 480ms cubic-bezier(.2,.7,.3,1) var(--day-delay,0ms) backwards}.heatmap-day:not(.is-outside){transition:transform 160ms ease,box-shadow 160ms ease}}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.heatmap-day:not(.is-outside):hover{position:relative;z-index:1;transform:scale(1.18);box-shadow:0 0 0 2px #729f3e33}}
+
 /* Resume-backed skills and professional experience. */
 .button-resume{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;border:1px solid #89b348;border-radius:2px;background:#bee38d;color:#22351a;font-size:12px;line-height:1.5;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 #87ab4d40;transition:background .2s,transform .2s}.button-resume:hover{background:#aed76f;transform:translateY(-2px)}.button-resume svg{flex:none}
 .skill-group{grid-template-columns:245px minmax(0,1fr);gap:28px}.skill-group-label{padding-top:10px;gap:14px}.skill-group-label h3{max-width:none}.skill-group-label p{font-size:11px;line-height:1.8;color:#737e6a;margin:10px 0 0}.skill-tiles{grid-template-columns:repeat(6,minmax(0,1fr));align-content:start;gap:10px}.skill-tile{min-height:116px;font-size:10px;line-height:1.6;padding:17px 7px}.skill-tile>span{max-width:100%;overflow-wrap:anywhere}

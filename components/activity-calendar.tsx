@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+
 type ActivityDay = { date: string; count: number; level?: number };
 
 type ActivityCalendarProps = {
@@ -25,6 +29,23 @@ function dateLabel(date: Date) {
 }
 
 export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }: ActivityCalendarProps) {
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const calendar = calendarRef.current;
+    if (!calendar || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setRevealed(true);
+      observer.disconnect();
+    }, { threshold: 0.3 });
+
+    observer.observe(calendar);
+    return () => observer.disconnect();
+  }, []);
+
   const first = utcDate(startDate);
   const last = utcDate(endDate);
   const gridStart = new Date(first.getTime() - first.getUTCDay() * dayMilliseconds);
@@ -41,6 +62,7 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
     const activity = byDate.get(key);
     const count = activity?.count ?? 0;
     const level = activity?.level ?? (count >= 7 ? 4 : count >= 4 ? 3 : count >= 2 ? 2 : count ? 1 : 0);
+    const week = Math.floor((timestamp - gridStart.getTime()) / (7 * dayMilliseconds));
 
     if (inside && (key === startDate || date.getUTCDate() === 1)) {
       months.push({
@@ -54,6 +76,7 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
       <span
         key={key}
         className={`heatmap-day${inside ? "" : " is-outside"}`}
+        style={{ "--day-delay": `${week * 12 + date.getUTCDay() * 22}ms` } as CSSProperties}
         data-level={inside ? level : 0}
         title={inside ? `${count} ${unit}${count === 1 ? "" : "s"} on ${dateLabel(date)}` : undefined}
         aria-hidden="true"
@@ -70,7 +93,7 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
   const columns = { gridTemplateColumns: `repeat(${weeks}, var(--heatmap-cell))` };
 
   return (
-    <div className={`activity-calendar ${tone}`} role="img" aria-label={label}>
+    <div ref={calendarRef} className={`activity-calendar ${tone}`} data-revealed={revealed} role="img" aria-label={label}>
       <div className="calendar-scroll">
         <div className="calendar-content">
           <div className="calendar-weekdays" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span></div>
@@ -78,7 +101,7 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
             <div className="calendar-months" style={columns} aria-hidden="true">
               {visibleMonths.map((month) => <span key={month.key} style={{ gridColumnStart: month.column }}>{month.label}</span>)}
             </div>
-            <div className="calendar-grid" style={columns} aria-hidden="true">{cells}</div>
+            <div key={`${startDate}:${endDate}`} className="calendar-grid" style={columns} aria-hidden="true">{cells}</div>
           </div>
         </div>
       </div>
