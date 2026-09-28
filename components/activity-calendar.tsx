@@ -29,10 +29,10 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
   const last = utcDate(endDate);
   const gridStart = new Date(first.getTime() - first.getUTCDay() * dayMilliseconds);
   const gridEnd = new Date(last.getTime() + (6 - last.getUTCDay()) * dayMilliseconds);
-  const weeks = Math.round((gridEnd.getTime() - gridStart.getTime()) / (7 * dayMilliseconds)) + 1;
+  const weeks = Math.floor((gridEnd.getTime() - gridStart.getTime()) / (7 * dayMilliseconds)) + 1;
   const byDate = new Map(days.map((day) => [day.date, day]));
   const cells = [];
-  const months = [];
+  const months: Array<{ key: string; label: string; column: number }> = [];
 
   for (let timestamp = gridStart.getTime(); timestamp <= gridEnd.getTime(); timestamp += dayMilliseconds) {
     const date = new Date(timestamp);
@@ -61,6 +61,12 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
     );
   }
 
+  // A rolling range can start just before the next month, placing both labels
+  // in the same or adjacent week. Prefer the later month when they cannot fit.
+  const visibleMonths = months.filter((month, index) => {
+    const nextMonth = months[index + 1];
+    return !nextMonth || nextMonth.column - month.column >= 2;
+  });
   const columns = { gridTemplateColumns: `repeat(${weeks}, var(--heatmap-cell))` };
 
   return (
@@ -70,7 +76,7 @@ export function ActivityCalendar({ days, startDate, endDate, label, unit, tone }
           <div className="calendar-weekdays" aria-hidden="true"><span>Mon</span><span>Wed</span><span>Fri</span></div>
           <div>
             <div className="calendar-months" style={columns} aria-hidden="true">
-              {months.map((month) => <span key={month.key} style={{ gridColumnStart: month.column }}>{month.label}</span>)}
+              {visibleMonths.map((month) => <span key={month.key} style={{ gridColumnStart: month.column }}>{month.label}</span>)}
             </div>
             <div className="calendar-grid" style={columns} aria-hidden="true">{cells}</div>
           </div>
