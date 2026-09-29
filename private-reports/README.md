@@ -10,6 +10,7 @@ Current Access policy protects **all traffic** and requires a Cloudflare account
 
 - Equity and recycling collections, dated archives, summary figures, search and filters.
 - Expandable explanations, source links, stock-specific impact/direction/confidence, and event history.
+- Equity AI analysis from each stock's `ai_analysis`: business effects, time horizons, uncertainty, monitoring points, provider/model, and source redactions. An overview and an AI-only filter surface enriched events; older reports without AI remain readable. Source scoring is kept separate from AI commentary, and partial enrichment runs are reported accurately.
 - Source failures, partial coverage, stale reports and empty days are displayed explicitly.
 - Download the original structured report. Five-minute server caching limits GitHub requests; refreshing does not run the source collectors.
 - Initially only `arun.b.bhat@gmail.com` may sign in. There is no public registration.

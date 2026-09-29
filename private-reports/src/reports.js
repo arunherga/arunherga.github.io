@@ -30,6 +30,25 @@ const strings = value => list(value).filter(v => typeof v === "string");
 const num = value => typeof value === "number" && Number.isFinite(value) ? value : null;
 const stats = value => Object.fromEntries(Object.entries(value || {}).filter(([, v]) => typeof v === "number" && Number.isFinite(v)));
 
+const AI_FIELDS = [
+  ["revenue_effect", "Revenue"], ["margin_effect", "Margin"],
+  ["cost_effect", "Costs"], ["competitive_effect", "Competition"],
+  ["regulatory_effect", "Regulation"], ["short_term", "Short term"],
+  ["medium_long_term", "Medium / long term"], ["second_order_effects", "Second-order effects"],
+  ["key_uncertainty", "Key uncertainty"],
+];
+
+function normalizeAI(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const sections = AI_FIELDS.map(([key, label]) => ({ key, label, text: str(raw[key]).trim() })).filter(section => section.text);
+  const monitor = strings(raw.monitor_next).map(value => value.trim()).filter(Boolean);
+  if (!sections.length && !monitor.length) return null;
+  return {
+    provider: str(raw.provider), model: str(raw.model), sections, monitor,
+    redactions: strings(raw.redactions),
+  };
+}
+
 export function normalizeReport(kind, raw, date) {
   repository(kind);
   const equity = kind === "equity";
@@ -50,6 +69,7 @@ export function normalizeReport(kind, raw, date) {
       why: str(value.why_it_matters), reasons: strings(value.score_reasons),
       directionReasons: strings(value.direction_reasons), confidenceReasons: strings(value.confidence_reasons),
       watch: strings(value.watch_next), impacts: strings(value.business_impacts),
+      ai: normalizeAI(value.ai_analysis),
     })).sort((a, b) => (b.score ?? -1) - (a.score ?? -1)),
     history: list(event.event_history).map(h => ({ date: str(h.timestamp), detail: str(h.detail), change: str(h.change) })),
   })) : raw.articles.filter(a => !a.duplicate_of).map(article => ({
@@ -64,8 +84,10 @@ export function normalizeReport(kind, raw, date) {
     assessments: [], history: [],
   }));
   const diagnostics = equity ? list(raw.diagnostics).map(d => ({
-    name: str(d.source), status: d.ok === false ? "failed" : list(d.errors).length ? "partial" : "ok",
+    name: str(d.source), status: d.ok === false ? "failed" : list(d.errors).length ||
+      (num(d.attempted) != null && num(d.succeeded) != null && d.succeeded < d.attempted) ? "partial" : "ok",
     articles: num(d.articles), errors: strings(d.errors), note: str(d.note),
+    attempted: num(d.attempted), succeeded: num(d.succeeded),
   })) : [
     ...strings(raw.stats?.sources_ok).map(name => ({ name, status: "ok", errors: [], note: "" })),
     ...strings(raw.stats?.source_errors).map(error => ({ name: "Collection issue", status: "failed", errors: [error], note: "" })),
