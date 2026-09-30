@@ -4,7 +4,7 @@ import "./globals.css";
 
 const title = `${profile.name} — ${profile.role}`;
 const description =
-  `${profile.name} is a data platform engineer in Udupi, India, building Kafka and Debezium CDC pipelines, Kubernetes platforms, and reliable infrastructure with Terraform and GitOps.`;
+  `${profile.name} is a ${profile.role.toLowerCase()} in Udupi, India, building Kafka and Debezium CDC pipelines, Kubernetes platforms, and reliable infrastructure with Terraform and GitOps.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://arunbhat.com"),
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   creator: profile.name,
   keywords: [
     profile.name,
+    profile.role,
     "platform engineer",
     "platform engineering",
     "data platform engineer",

@@ -1,13 +1,13 @@
 export const profile = {
   name: "Arun Balakrishna Bhat",
-  role: "Data Platform Engineer",
+  role: "Senior Platform Engineer",
   summary: "I design, build, and operate Kafka-based data pipelines and CDC platforms, with a focus on reliability, performance, and data quality. I automate infrastructure and help engineering teams move from ingestion to dependable data consumption.",
   location: "Udupi, India",
   email: "arun.b.bhat@gmail.com",
   github: "https://github.com/arunherga",
   linkedin: "https://www.linkedin.com/in/arunbbhat/",
   leetcode: "https://leetcode.com/u/arunHerga/",
-  resume: "/resume/Arun_Bhat_Resume_Data_Platform_Engineer.pdf",
+  resume: "/resume/Arun_Bhat_Resume_Senior_Platform_Engineer.pdf",
 };
 
 // Resume-backed skills, plus tools Arun previously confirmed and his GitHub profile.
@@ -41,7 +41,7 @@ export const skillGroups = [
 
 export const experience = [
   {
-    company: "iHerb", role: "Data Platform Engineer", period: "2025 — Present",
+    company: "iHerb", role: "Senior Platform Engineer", period: "2025 — Present",
     summary: "Operate Confluent Kafka and Strimzi clusters on Kubernetes, and build Debezium CDC pipelines for production data platforms.",
     highlights: ["Improved CDC throughput by approximately 60% through connector and task tuning.", "Strengthened connector health and data-freshness monitoring; fixed a data-loss bug with a custom Java transform.", "Manage GitOps deployments with Helm, Kustomize, and Flux CD, alongside Confluent Cloud capacity and cost planning."],
   },

@@ -63,7 +63,7 @@ export default function Home() {
         </section>
 
         <section id="about" className="section wrap about-section" aria-labelledby="about-title">
-          <div className="section-heading centered"><span className="eyebrow">01 / ABOUT</span><h2 id="about-title">The engineer behind the platform.</h2><p>I’m {profile.name}, a data platform engineer in Udupi, India. {profile.summary}</p></div>
+          <div className="section-heading centered"><span className="eyebrow">01 / ABOUT</span><h2 id="about-title">The engineer behind the platform.</h2><p>I’m {profile.name}, a {profile.role.toLowerCase()} in Udupi, India. {profile.summary}</p></div>
           <div className="focus-grid">{areas.map(({ icon: Icon, title, text }) => <article className="focus-card" key={title}><span className="square-icon"><Icon size={23} strokeWidth={1.6} /></span><h3>{title}</h3><p>{text}</p></article>)}</div>
           <div className="about-note"><Terminal size={17} /><p>Ask me about CDC performance, Kafka Connect, GitOps, or keeping a streaming platform reliable in production.</p></div>
           <div className="experience-section" aria-labelledby="experience-title">
