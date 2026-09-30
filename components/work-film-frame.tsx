@@ -1,9 +1,9 @@
 import { useId } from "react";
 import { profile } from "@/lib/portfolio";
 import { CHAPTER_FRAMES, FILM_FRAMES, filmChapters } from "@/lib/work-film";
-import { SearchScene, TerraformScene, LatencyScene, RecyclingScene } from "./work-scenes";
+import { SearchScene, TerraformScene, LatencyScene, RecyclingScene, EquityScene } from "./work-scenes";
 
-const scenes = [SearchScene, TerraformScene, LatencyScene, RecyclingScene];
+const scenes = [SearchScene, TerraformScene, LatencyScene, RecyclingScene, EquityScene];
 
 // A shared frame keeps the film cohesive; every project has its own scene.
 export function WorkFilmFrame({ frame = 205, reducedMotion = false }: { frame?: number; reducedMotion?: boolean }) {

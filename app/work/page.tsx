@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Search, Boxes, Gauge, Newspaper, Code2 as Github } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Search, Boxes, Gauge, Newspaper, ChartNoAxesCombined, Code2 as Github } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { WorkShowcase } from "@/components/work-showcase";
 import { profile, projects } from "@/lib/portfolio";
 
-const projectIcons = [Search, Boxes, Gauge, Newspaper];
+const projectIcons = [Search, Boxes, Gauge, Newspaper, ChartNoAxesCombined];
 
 export const metadata: Metadata = {
   title: `Selected Work — ${profile.name}`,
-  description: `Open-source Kafka tools, infrastructure automation, and daily recycling intelligence by ${profile.name}.`,
+  description: `Open-source Kafka tools, infrastructure automation, and daily equity and recycling intelligence by ${profile.name}.`,
   alternates: { canonical: "/work/" },
-  openGraph: { type: "website", url: "/work/", siteName: profile.name, title: `Selected Work — ${profile.name}`, description: `Kafka tooling, infrastructure sandboxes, latency profiling, and recycling intelligence. Explore open-source projects by ${profile.name}.`, images: [{ url: "/og-work.png", width: 1200, height: 630, alt: `Selected work by ${profile.name}` }] },
-  twitter: { card: "summary_large_image", title: `Selected Work — ${profile.name}`, description: `Kafka tooling, infrastructure automation, and recycling intelligence by ${profile.name}.`, images: ["/og-work.png"] },
+  openGraph: { type: "website", url: "/work/", siteName: profile.name, title: `Selected Work — ${profile.name}`, description: `Kafka tooling, infrastructure sandboxes, latency profiling, and equity and recycling intelligence. Explore open-source projects by ${profile.name}.`, images: [{ url: "/og-work.png", width: 1200, height: 630, alt: `Selected work by ${profile.name}` }] },
+  twitter: { card: "summary_large_image", title: `Selected Work — ${profile.name}`, description: `Kafka tooling, infrastructure automation, and equity and recycling intelligence by ${profile.name}.`, images: ["/og-work.png"] },
 };
 
 export default function WorkPage() {

@@ -4,6 +4,42 @@ const ease = (frame: number, start: number, duration = 20) => {
   return 1 - (1 - t) ** 3;
 };
 
+export function EquityScene({ frame }: SceneProps) {
+  const sources = ["Policy changes", "Input costs", "Global news"];
+  return <g>
+    {sources.map((label, i) => {
+      const y = 278 + i * 77;
+      const progress = ease(frame, 25 + i * 24, 38);
+      return <g key={label} opacity={ease(frame, i * 18, 20)}>
+        <rect x="48" y={y - 26} width="216" height="52" rx="6" fill="#3b2c25" stroke="#a47b5f" />
+        <text x="68" y={y + 7} fontSize="21" fill="#f5ddc9">{label}</text>
+        <path d={`M264 ${y}L382 355`} stroke="#886b59" strokeWidth="2" />
+        <circle cx={264 + progress * 118} cy={y + progress * (355 - y)} r="5" fill="#f0b989" opacity={progress < 1 ? 1 : 0} />
+      </g>;
+    })}
+    <g opacity={ease(frame, 44, 25)}>
+      <circle cx="438" cy="355" r="56" fill="#4a3327" stroke="#f0b989" strokeWidth="2" />
+      <path d="M415 366V345H428V366M435 366V329H448V366M455 366V339H468V366" fill="none" stroke="#f0b989" strokeWidth="2" />
+      <text x="438" y="441" textAnchor="middle" fontSize="20" fill="#f5ddc9">Company exposure</text>
+      <text x="438" y="474" textAnchor="middle" fontSize="17" fill="#c7a68f">direct + indirect</text>
+    </g>
+    <g opacity={ease(frame, 108, 20)}>
+      <path d="M495 355H632M624 347L632 355L624 363" fill="none" stroke="#f0b989" strokeWidth="2" />
+      <text x="565" y="332" textAnchor="middle" fontSize="15" fill="#d6af90">match</text>
+    </g>
+    <g opacity={ease(frame, 127, 25)} transform={`translate(${(1 - ease(frame, 127, 25)) * 20} 0)`}>
+      <rect x="650" y="247" width="268" height="253" rx="8" fill="#f6eade" />
+      <text x="672" y="281" fontSize="19" fontWeight="700" fill="#4e3526">WATCHLIST BRIEF</text>
+      <path d="M672 295H896" stroke="#bea087" />
+      {["Linked events", "Impact reasons", "AI explanations", "Source links"].map((label, i) => <g key={label} opacity={ease(frame, 146 + i * 17, 18)}>
+        <circle cx="680" cy={324 + i * 42} r="4" fill="#a16234" />
+        <text x="696" y={331 + i * 42} fontSize="19" fill="#513a2b">{label}</text>
+      </g>)}
+      <text x="672" y="481" fontSize="14" fill="#805f48">Trace each finding to evidence</text>
+    </g>
+  </g>;
+}
+
 export function SearchScene({ frame }: SceneProps) {
   const command = "kgrep consume --allowed-keys-csv ids.csv";
   const rows = ["order-1001", "order-1042", "order-1002", "order-1090", "order-1005"];

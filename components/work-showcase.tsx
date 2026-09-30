@@ -28,7 +28,7 @@ export function WorkShowcase() {
   }
 
   return <section className="work-showcase wrap" id="in-motion" aria-labelledby="showcase-title">
-    <div className="showcase-heading"><div><p className="eyebrow">{FILM_SECONDS} SECONDS / FOUR PROJECTS</p><h2 id="showcase-title">Different problems. Different tools.</h2></div><a className="button-text" href="#projects">Jump to projects <ArrowDown size={15} /></a></div>
+    <div className="showcase-heading"><div><p className="eyebrow">{FILM_SECONDS} SECONDS / {filmChapters.length} PROJECTS</p><h2 id="showcase-title">Different problems. Different tools.</h2></div><a className="button-text" href="#projects">Jump to projects <ArrowDown size={15} /></a></div>
     <div className="film-shell" aria-label="Animated project walkthrough">
       {FilmPlayer ? <FilmPlayer reducedMotion={reducedMotion} initialChapter={selectedChapter} /> : <>
         <button type="button" className="film-poster" onClick={openFilm} disabled={loading} aria-label={`${reducedMotion ? "Open" : "Play"} ${filmChapters[selectedChapter].label} walkthrough`}>
