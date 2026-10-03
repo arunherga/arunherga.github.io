@@ -30,6 +30,26 @@ const strings = value => list(value).filter(v => typeof v === "string");
 const num = value => typeof value === "number" && Number.isFinite(value) ? value : null;
 const stats = value => Object.fromEntries(Object.entries(value || {}).filter(([, v]) => typeof v === "number" && Number.isFinite(v)));
 
+function diagnosticStatus(d) {
+  if (d.skipped === true) return "skipped";
+  if (d.ok === false) return "failed";
+  if (list(d.errors).length || (num(d.attempted) != null && num(d.succeeded) != null && d.succeeded < d.attempted)) return "partial";
+  if (d.articles === 0 && d.succeeded > 0) return "no_data";
+  if (d.attempted === 0 && d.articles === 0) return "not_run";
+  return "ok";
+}
+
+function normalizeConsumer(raw) {
+  return list(raw).filter(value => value && typeof value === "object" && str(value.ticker)).map(value => ({
+    ticker: str(value.ticker), mentions: num(value.mentions), previousMentions: num(value.previous_mentions),
+    mentionChange: num(value.mention_change), netChange: num(value.net_change), net: num(value.net),
+    positive: num(value.positive), negative: num(value.negative), neutral: num(value.neutral),
+    engagement: num(value.engagement), leaning: str(value.leaning),
+    terms: stats(value.terms),
+    examples: list(value.examples).filter(Boolean).map(example => ({ title: str(example.title), url: safeURL(example.url), source: str(example.source), polarity: str(example.polarity) })),
+  }));
+}
+
 const AI_FIELDS = [
   ["revenue_effect", "Revenue"], ["margin_effect", "Margin"],
   ["cost_effect", "Costs"], ["competitive_effect", "Competition"],
@@ -60,8 +80,9 @@ export function normalizeReport(kind, raw, date) {
     id: str(event.event_id), title: str(event.title), summary: str(event.summary),
     date: str(event.event_date), categories: strings(event.event_types), locations: [],
     international: event.is_international === true,
-    firstSeen: str(event.first_seen), updated: str(event.last_updated),
-    sources: list(event.sources).map(source => ({ label: str(source.source_name) || str(source.source_domain) || "Source", url: safeURL(source.url), official: source.is_official === true })),
+    firstSeen: str(event.first_seen), updated: str(event.last_updated), tags: strings(event.tags),
+    articleCount: num(event.article_count), sourceCount: num(event.source_count), primarySource: str(event.primary_source),
+    sources: list(event.sources).map(source => ({ label: str(source.source_name) || str(source.source_domain) || "Source", url: safeURL(source.url), official: source.is_official === true, title: str(source.title), published: str(source.published), type: str(source.source_type), quality: num(source.quality) })),
     assessments: Object.entries(event.stocks || {}).map(([ticker, value]) => ({
       ticker, score: num(value.impact_score), band: str(value.impact_band),
       direction: str(value.direction), confidence: num(value.confidence),
@@ -69,6 +90,7 @@ export function normalizeReport(kind, raw, date) {
       why: str(value.why_it_matters), reasons: strings(value.score_reasons),
       directionReasons: strings(value.direction_reasons), confidenceReasons: strings(value.confidence_reasons),
       watch: strings(value.watch_next), impacts: strings(value.business_impacts),
+      exposures: list(value.exposures).filter(Boolean).map(exposure => ({ type: str(exposure.exposure_type), term: str(exposure.term), relationship: str(exposure.relationship), weight: num(exposure.weight), detail: str(exposure.detail) })),
       ai: normalizeAI(value.ai_analysis),
     })).sort((a, b) => (b.score ?? -1) - (a.score ?? -1)),
     history: list(event.event_history).map(h => ({ date: str(h.timestamp), detail: str(h.detail), change: str(h.change) })),
@@ -84,10 +106,9 @@ export function normalizeReport(kind, raw, date) {
     assessments: [], history: [],
   }));
   const diagnostics = equity ? list(raw.diagnostics).map(d => ({
-    name: str(d.source), status: d.ok === false ? "failed" : list(d.errors).length ||
-      (num(d.attempted) != null && num(d.succeeded) != null && d.succeeded < d.attempted) ? "partial" : "ok",
+    name: str(d.source), status: diagnosticStatus(d),
     articles: num(d.articles), errors: strings(d.errors), note: str(d.note),
-    attempted: num(d.attempted), succeeded: num(d.succeeded),
+    attempted: num(d.attempted), succeeded: num(d.succeeded), duration: num(d.duration_s),
   })) : [
     ...strings(raw.stats?.sources_ok).map(name => ({ name, status: "ok", errors: [], note: "" })),
     ...strings(raw.stats?.source_errors).map(error => ({ name: "Collection issue", status: "failed", errors: [error], note: "" })),
@@ -95,8 +116,9 @@ export function normalizeReport(kind, raw, date) {
   return {
     kind, date, generatedAt: str(equity ? raw.finished_at : raw.generated_at),
     dryRun: raw.dry_run === true, stats: stats(raw.stats), tickers: strings(raw.tickers),
-    items, diagnostics, notes: equity ? [] : strings(raw.stats?.source_notes),
+    items, diagnostics, consumer: equity ? normalizeConsumer(raw.consumer) : [], consumerAvailable: equity && Array.isArray(raw.consumer), notes: equity ? [] : strings(raw.stats?.source_notes),
     sourceURL: `https://github.com/${repository(kind)}/blob/main/data/daily/${date}.json`,
+    briefingURL: equity ? `https://github.com/${repository(kind)}/blob/main/reports/${date}.md` : "",
   };
 }
 

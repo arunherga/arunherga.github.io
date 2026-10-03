@@ -1,4 +1,4 @@
-import { escapeHTML as esc, humanize, assessmentFor, filterItems, renderAIAnalysis, renderAIOverview } from "./view.js";
+import { escapeHTML as esc, humanize, assessmentFor, filterItems, renderAIAnalysis, renderAIOverview, equitySummary, renderWatchlist, renderConsumer, diagnosticLabel, coverageSummary, renderExposure, reportable } from "./view.js";
 
 const paths = {
   arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
@@ -19,9 +19,10 @@ const meta = {
   equity: { title: "Equity intelligence", short: "Equity", eyebrow: "MARKETS / DAILY BRIEFING", description: "The events behind your watchlist. Read the context, understand the impact, and follow the sources.", repo: "global-equity-intelligence", icon: "equity" },
   recycling: { title: "Recycling intelligence", short: "Recycling", eyebrow: "INDUSTRY / DAILY BRIEFING", description: "A closer look at India’s recycling industry. Explore opportunities, regulation, and developments near home.", repo: "plastic-recycling-intelligence", icon: "recycle" },
 };
-const initialFilters = () => ({ search: "", priority: "relevant", ticker: "", direction: "", category: "", opportunity: false, aiOnly: false });
+const initialFilters = () => ({ search: "", priority: "relevant", ticker: "", direction: "", category: "", opportunity: false, aiOnly: false, scope: "" });
 const state = { kind: "equity", dates: [], date: "", report: null, identity: null, loading: true, error: "", checkedAt: "", filters: initialFilters(), limit: 20 };
 let controller;
+let searchTimer;
 const root = document.querySelector("#app");
 const dateLabel = value => {
   if (!value) return "Unavailable";
@@ -90,10 +91,11 @@ function renderReport() {
   const report = state.report;
   const equity = state.kind === "equity";
   const s = report.stats;
-  const metrics = equity ? [["Articles scanned", s.articles_scanned, "Across configured sources"], ["Relevant events", s.relevant_events, "Source-reported count"], ["High impact", s.high_impact_events, "Source-reported count"], ["Critical events", s.critical_events, "Highest attention band"]] : [["Articles scanned", s.collected, "Before filtering and deduplication"], ["Relevant articles", s.relevant, "Relevance score of 4 or higher"], ["High priority", s.high_priority, "Relevance score of 8 or higher"], ["Opportunities", s.opportunities, "Flagged by the source report"]];
+  const totals = equity ? equitySummary(report) : null;
+  const metrics = equity ? [["Articles scanned", s.articles_scanned, "Collector run total"], ["Relevant events", totals.relevant, "From the stored daily findings"], ["High-impact events", totals.high, `${totals.highAssessments} company assessments`], ["Critical events", totals.critical, `${totals.criticalAssessments} company assessments`]] : [["Articles scanned", s.collected, "Before filtering and deduplication"], ["Relevant articles", s.relevant, "Relevance score of 4 or higher"], ["High priority", s.high_priority, "Relevance score of 8 or higher"], ["Opportunities", s.opportunities, "Flagged by the source report"]];
   const matchingRecords = filterItems(report, initialFilters()).length;
   const sourceCount = equity ? s.relevant_events : s.relevant;
-  const issues = report.diagnostics.filter(d => d.status !== "ok").length;
+  const { issues, quiet } = coverageSummary(report.diagnostics);
   const generated = Date.parse(report.generatedAt);
   const stale = Number.isNaN(generated) || Date.now() - generated > 36 * 60 * 60 * 1000;
   const historical = state.date !== state.dates[0];
@@ -101,21 +103,25 @@ function renderReport() {
     ${report.dryRun ? '<div class="notice">This is a dry-run report from the source repository.</div>' : ""}
     ${stale && !historical ? '<div class="notice">This is the latest available output, but it is over 36 hours old or its generation time is unavailable. Refreshing here reads the repository; it does not run the collectors.</div>' : ""}
     <section class="metrics" aria-label="Report summary">${metrics.map(([label, value, detail], i) => `<div class="metric"><span class="metric-label">${label}<span>0${i + 1}</span></span><strong>${count(value)}</strong><small>${detail}</small></div>`).join("")}</section>
-    ${sourceCount != null && sourceCount !== matchingRecords ? `<p class="reading-note">The collector reports ${count(sourceCount)} relevant findings; ${count(matchingRecords)} stored records meet this reader’s score filter. The summary above preserves the collector’s figures.</p>` : ""}
-    <details class="source-health ${issues ? "has-issues" : ""}"><summary>${icon(issues ? "alert" : "check")}<span><b>${issues ? `Coverage needs attention · ${issues} source groups` : report.diagnostics.length ? "Sources checked · no errors reported" : "Source status unavailable"}</b><small>${issues ? "Some sources failed or returned partial results. Review before relying on this briefing." : "Open collection details and notes"}</small></span>${icon("down")}</summary><div class="health-details">${report.diagnostics.map(d => `<div><span class="health-status ${esc(d.status)}">${esc(humanize(d.status))}</span><h3>${esc(humanize(d.name))}</h3>${d.articles != null ? `<small>${count(d.articles)} items collected</small>` : ""}${d.errors.length ? textList(d.errors) : ""}${d.note ? `<p>${esc(d.note)}</p>` : ""}</div>`).join("")}${report.notes.length ? `<div class="collection-notes"><h3>Collection notes</h3>${textList(report.notes)}</div>` : ""}</div></details>
+    ${sourceCount != null && sourceCount !== matchingRecords ? `<p class="reading-note">The collector’s run counter reports ${count(sourceCount)} relevant findings; the stored daily snapshot contains ${count(matchingRecords)} matching records. The cards above count stored findings. The repository’s Markdown briefing may use a different assembled snapshot; both originals are linked below.</p>` : ""}
+    ${equity ? `<details class="run-totals"><summary>Collector counters & report scope</summary><p>Run counters are preserved as supplied. Stored events can differ after merged or repeated runs. High-impact and critical event cards count distinct events; company assessments count each affected company separately.</p><dl>${Object.entries(s).map(([key, value]) => `<div><dt>${esc(humanize(key))}</dt><dd>${count(value)}</dd></div>`).join("")}</dl><p>Reader rules: relevant impact ≥5, weak relationships ≥9, high impact ≥8, critical ≥13. “All findings” includes stored records below these thresholds.</p></details>` : ""}
+    <details class="source-health ${issues ? "has-issues" : ""}"><summary>${icon(issues ? "alert" : "check")}<span><b>${issues ? `Coverage needs attention · ${issues} source groups` : report.diagnostics.length ? "Collection checks available" : "Source status unavailable"}</b><small>${issues ? "Some sources failed or returned partial results." : "No collection failures reported."}${quiet ? ` ${quiet} groups were skipped, not run, or returned no data.` : ""} Open for complete details.</small></span>${icon("down")}</summary><div class="health-details">${report.diagnostics.map(d => `<div><span class="health-status ${esc(d.status)}">${esc(diagnosticLabel(d.status))}</span><h3>${esc(humanize(d.name))}</h3>${d.articles != null ? `<small>${count(d.articles)} items returned</small>` : ""}${d.attempted != null ? `<p>${count(d.succeeded)} of ${count(d.attempted)} attempts succeeded${d.duration != null ? ` · ${d.duration.toFixed(1)} seconds` : ""}</p>` : ""}${d.errors.length ? textList(d.errors) : ""}${d.note ? `<p>${esc(d.note)}</p>` : ""}</div>`).join("")}${report.notes.length ? `<div class="collection-notes"><h3>Collection notes</h3>${textList(report.notes)}</div>` : ""}</div></details>
+    ${renderWatchlist(report)}
+    ${equity ? '<nav class="report-jumps" aria-label="Briefing sections"><a href="#consumer-signal">Consumer signal ↓</a><a href="#findings">Browse events ↓</a></nav>' : ""}
     ${renderAIOverview(report)}
-    <section class="findings"><div class="section-heading"><div><span class="eyebrow">THE READING ROOM</span><h2>${equity ? "Events worth your attention" : "Industry signals & opportunities"}</h2></div><a class="text-link" href="/api/report?kind=${state.kind}&date=${state.date}&download=1">${icon("file")} Download report</a></div>
-    <p class="reading-note">${equity ? "Impact scores indicate attention, not investment recommendations. Direction and confidence come from your source analysis." : "Relevance scores and opportunity flags come from your collector. Open the original source to investigate a finding."}</p>
+    <section class="findings" id="findings"><div class="section-heading"><div><span class="eyebrow">THE READING ROOM</span><h2>${equity ? "Events worth your attention" : "Industry signals & opportunities"}</h2></div><a class="text-link" href="/api/report?kind=${state.kind}&date=${state.date}&download=1">${icon("file")} Download report</a></div>
+    <p class="reading-note">${equity ? "Impact scores indicate attention, not investment recommendations. Relevant findings respect the source’s stricter threshold for weak company links. Choose All findings to include lower scores." : "Relevance scores and opportunity flags come from your collector. Open the original source to investigate a finding."}</p>
     <div class="filters"><label class="search-field"><span class="sr-only">Search findings</span>${icon("search")}<input type="search" name="search" placeholder="${equity ? "Search events, companies, topics…" : "Search news, locations, topics…"}" value="${esc(state.filters.search)}" /></label>
       <label>Priority<select name="priority">${option("relevant", "Relevant", state.filters.priority)}${option("high", "High priority", state.filters.priority)}${option("all", "All findings", state.filters.priority)}</select></label>
-      ${equity ? `<label>Company<select name="ticker">${option("", "All companies", state.filters.ticker)}${report.tickers.map(t => option(t, t, state.filters.ticker)).join("")}</select></label><label>Direction<select name="direction">${option("", "All directions", state.filters.direction)}${["POSITIVE", "NEGATIVE", "MIXED", "UNCERTAIN"].map(d => option(d, humanize(d), state.filters.direction)).join("")}</select></label>` : `<label>Category<select name="category">${option("", "All categories", state.filters.category)}${[...new Set(report.items.flatMap(i => i.categories))].sort().map(c => option(c, humanize(c), state.filters.category)).join("")}</select></label><label class="checkbox"><input type="checkbox" name="opportunity" ${state.filters.opportunity ? "checked" : ""} /> Opportunities only</label>`}
-    </div>${equity ? `<label class="checkbox ai-filter"><input type="checkbox" name="aiOnly" ${state.filters.aiOnly ? "checked" : ""} /> AI analysis only</label>` : ""}<div id="result-count" class="results-meta" aria-live="polite"></div><div id="results"></div></section>
-    <div class="provenance"><span>${icon("file")}</span><div><b>From your repository, with the context intact.</b><p>Report dates, scores, explanations, and source links are preserved. A private dashboard does not change the visibility of files in the source repositories.</p><a href="${esc(report.sourceURL)}" target="_blank" rel="noopener noreferrer">View original data ${icon("arrow")}</a></div></div>`;
+      ${equity ? `<label>Company<select name="ticker">${option("", "All companies", state.filters.ticker)}${report.tickers.map(t => option(t, t, state.filters.ticker)).join("")}</select></label><label>Direction<select name="direction">${option("", "All directions", state.filters.direction)}${["POSITIVE", "NEGATIVE", "MIXED", "NEUTRAL", "UNCERTAIN"].map(d => option(d, humanize(d), state.filters.direction)).join("")}</select></label>` : `<label>Category<select name="category">${option("", "All categories", state.filters.category)}${[...new Set(report.items.flatMap(i => i.categories))].sort().map(c => option(c, humanize(c), state.filters.category)).join("")}</select></label><label class="checkbox"><input type="checkbox" name="opportunity" ${state.filters.opportunity ? "checked" : ""} /> Opportunities only</label>`}
+    </div>${equity ? `<div class="equity-extra-filters"><label>Event view<select name="scope">${option("", "All events", state.filters.scope)}${option("global", "Global exposure", state.filters.scope)}${option("cross", "Cross-company events", state.filters.scope)}</select></label><label>Event category<select name="category">${option("", "All categories", state.filters.category)}${[...new Set(report.items.flatMap(i => i.categories))].sort().map(c => option(c, humanize(c), state.filters.category)).join("")}</select></label><label class="checkbox ai-filter"><input type="checkbox" name="aiOnly" ${state.filters.aiOnly ? "checked" : ""} /> AI analysis only</label></div>` : ""}<div id="result-count" class="results-meta" aria-live="polite"></div><div id="results"></div></section>
+    ${renderConsumer(report)}
+    <div class="provenance"><span>${icon("file")}</span><div><b>From your repository, with the context intact.</b><p>Report dates, scores, explanations, and source links are preserved. A private dashboard does not change the visibility of files in the source repositories.</p><a href="${esc(report.sourceURL)}" target="_blank" rel="noopener noreferrer">View original data ${icon("arrow")}</a>${report.briefingURL ? `<a href="${esc(report.briefingURL)}" target="_blank" rel="noopener noreferrer">Read original briefing ${icon("arrow")}</a>` : ""}</div></div>`;
   renderResults();
 }
 
 function assessmentDetail(a) {
-  return `<div class="assessment"><div class="assessment-title"><h4>${esc(a.ticker)}</h4>${pill(`${a.score ?? "—"}/15 impact`)}${pill(humanize(a.direction), `direction ${["POSITIVE", "NEGATIVE", "MIXED", "UNCERTAIN"].includes(a.direction) ? a.direction.toLowerCase() : ""}`)}</div><div class="analysis-meta"><span>Relationship <b>${esc(humanize(a.relationship) || "Not provided")}</b></span><span>Confidence <b>${a.confidence == null ? "Not provided" : Math.round(a.confidence * 100) + "%"}</b></span><span>Horizon <b>${esc(humanize(a.horizon) || "Not provided")}</b></span></div><h5>Why it matters</h5><p>${esc(a.why || "Not provided by the source report.")}</p>${renderAIAnalysis(a.ai)}<div class="analysis-columns"><div><h5>Score breakdown</h5>${textList(a.reasons)}</div><div><h5>Watch next</h5>${textList(a.watch)}</div></div><details class="reasoning"><summary>Direction & confidence reasoning ${icon("down")}</summary><div class="analysis-columns"><div>${textList(a.directionReasons)}</div><div>${textList(a.confidenceReasons)}</div></div></details></div>`;
+  return `<div class="assessment"><div class="assessment-title"><h4>${esc(a.ticker)}</h4>${pill(`${a.score ?? "—"}/15 impact`)}${pill(humanize(a.direction), `direction ${["POSITIVE", "NEGATIVE", "MIXED", "NEUTRAL", "UNCERTAIN"].includes(a.direction) ? a.direction.toLowerCase() : ""}`)}</div><div class="analysis-meta"><span>Relationship <b>${esc(humanize(a.relationship) || "Not provided")}</b></span><span>Confidence <b>${a.confidence == null ? "Not provided" : Math.round(a.confidence * 100) + "%"}</b></span><span>Horizon <b>${esc(humanize(a.horizon) || "Not provided")}</b></span></div><h5>Why it matters</h5><p>${esc(a.why || "Not provided by the source report.")}</p>${renderExposure(a)}${renderAIAnalysis(a.ai)}<div class="analysis-columns"><div><h5>Score breakdown</h5>${textList(a.reasons)}</div><div><h5>Watch next</h5>${textList(a.watch)}</div></div><details class="reasoning"><summary>Direction & confidence reasoning ${icon("down")}</summary><div class="analysis-columns"><div>${textList(a.directionReasons)}</div><div>${textList(a.confidenceReasons)}</div></div></details></div>`;
 }
 
 function finding(item, index) {
@@ -123,14 +129,21 @@ function finding(item, index) {
   const assessment = equity ? assessmentFor(item, state.filters) : null;
   const score = equity ? assessment.score : item.score;
   const prominent = score != null && score >= 8;
-  const assessments = equity ? [assessment, ...item.assessments.filter(a => a !== assessment)] : [];
   return `<article class="finding"><div class="finding-index">${String(index + 1).padStart(2, "0")}</div><div class="finding-body"><div class="finding-top"><div class="tags">${equity ? pill(assessment.ticker, "company") : ""}${equity && item.assessments.some(a => a.ai) ? pill("AI analysis", "ai-badge") : ""}${item.categories.slice(0, 2).map(c => pill(humanize(c))).join("")}${item.opportunity ? pill("Opportunity", "opportunity") : ""}${item.international ? pill("International") : ""}</div><span class="score ${prominent ? "high" : ""}" title="${equity ? "Impact" : "Relevance"} score">${equity ? "IMPACT" : "RELEVANCE"} <b>${score ?? "—"}${equity ? "<small>/15</small>" : ""}</b></span></div>
-    <h3>${esc(item.title)}</h3><div class="finding-meta"><span>${esc(dateLabel(item.date))}</span><span>${esc(item.sources[0]?.label || "Source unavailable")}${item.sources.length > 1 ? ` +${item.sources.length - 1}` : ""}</span>${equity ? `<span>${esc(humanize(assessment.direction))} · ${assessment.confidence == null ? "Confidence unavailable" : Math.round(assessment.confidence * 100) + "% confidence"}</span>` : `<span>${esc(item.locations.join(" · "))}</span>`}</div>
+    <h3>${esc(item.title)}</h3><div class="finding-meta"><span>${esc(dateLabel(item.date))}</span><span>${esc(item.primarySource || item.sources[0]?.label || "Source unavailable")}${item.sources.length > 1 ? ` +${item.sources.length - 1}` : ""}</span>${equity ? `<span>${esc(humanize(assessment.direction))} · ${assessment.confidence == null ? "Confidence unavailable" : Math.round(assessment.confidence * 100) + "% confidence"}</span>` : `<span>${esc(item.locations.join(" · "))}</span>`}</div>
     <p class="finding-excerpt">${esc(equity ? assessment.why || item.summary : item.summary)}</p>
-    <details class="finding-detail"><summary>Read analysis ${icon("down")}<span>${equity && item.assessments.length > 1 ? `${item.assessments.length} companies affected` : item.sources.length + " linked source" + (item.sources.length === 1 ? "" : "s")}</span></summary><div class="detail-content"><div class="report-summary"><h4>${equity ? "Event summary" : esc(item.summaryKind)}</h4><p>${esc(item.summary || "No summary provided.")}</p></div>${equity ? assessments.map(assessmentDetail).join("") : `<div class="analysis-columns"><div><h4>Why it was selected</h4>${textList(item.reasons)}</div><div><h4>Opportunity context</h4>${item.opportunity ? textList(item.opportunityTypes) : "<p>No business opportunity was flagged in this report.</p>"}${item.relatedCoverage ? `<p>${count(item.relatedCoverage)} related duplicates recorded by the collector.</p>` : ""}</div></div>`}
-      <div class="source-links"><h4>Go to the evidence</h4>${item.sources.map(source => source.url ? `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.label)} ${source.official ? pill("Official") : ""}${icon("arrow")}</a>` : `<span>${esc(source.label)} · link unavailable</span>`).join("")}</div>
+    <details class="finding-detail" data-item-id="${esc(item.id)}"><summary>Read analysis ${icon("down")}<span>${equity && item.assessments.filter(reportable).length > 1 ? `${item.assessments.filter(reportable).length} relevant company links` : item.sources.length + " linked source" + (item.sources.length === 1 ? "" : "s")}</span></summary><div class="detail-content"></div></details></div></article>`;
+}
+
+
+function findingDetails(item) {
+  const equity = state.kind === "equity";
+  const assessment = equity ? assessmentFor(item, state.filters) : null;
+  const assessments = equity ? [assessment, ...item.assessments.filter(a => a !== assessment)].filter(Boolean) : [];
+  return `<div class="report-summary"><h4>${equity ? "Event summary" : esc(item.summaryKind)}</h4><p>${esc(item.summary || "No summary provided.")}</p></div>${equity ? `<div class="analysis-meta"><span>First seen <b>${esc(timeLabel(item.firstSeen))}</b></span><span>Last updated <b>${esc(timeLabel(item.updated))}</b></span><span>Source articles <b>${count(item.articleCount ?? item.sources.length)}</b></span><span>Source domains <b>${count(item.sourceCount)}</b></span></div><div class="tags">${[...item.categories, ...(item.tags ?? [])].map(value => pill(humanize(value))).join("")}</div>${assessments.map(a => a === assessment ? assessmentDetail(a) : `<details class="other-assessment"><summary>${esc(a.ticker)} · ${a.score ?? "—"}/15 · ${reportable(a) ? "Relevant company link" : "Below report threshold"}${a.ai ? " · AI analysis" : ""}</summary>${assessmentDetail(a)}</details>`).join("")}` : `<div class="analysis-columns"><div><h4>Why it was selected</h4>${textList(item.reasons)}</div><div><h4>Opportunity context</h4>${item.opportunity ? textList(item.opportunityTypes) : "<p>No business opportunity was flagged in this report.</p>"}${item.relatedCoverage ? `<p>${count(item.relatedCoverage)} related duplicates recorded by the collector.</p>` : ""}</div></div>`}
+      <div class="source-links evidence-list"><h4>Go to the evidence</h4>${item.sources.map(source => `<div class="evidence-source">${source.url ? `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.title || source.label)} ${source.official ? pill("Official") : ""}${icon("arrow")}</a>` : `<span>${esc(source.title || source.label)} · link unavailable</span>`}<small>${esc(source.label)}${source.published ? ` · ${esc(dateLabel(source.published))}` : ""}${source.type ? ` · ${esc(humanize(source.type))}` : ""}${source.quality != null ? ` · source quality ${source.quality}/10` : ""}</small></div>`).join("")}</div>
       ${item.history.length ? `<details class="reasoning"><summary>Event history ${icon("down")}</summary><ul class="history">${item.history.map(h => `<li><time>${esc(timeLabel(h.date))}</time> ${esc(h.detail || humanize(h.change))}</li>`).join("")}</ul></details>` : ""}
-      <span class="record-id">${esc(item.id)}</span></div></details></div></article>`;
+      <span class="record-id">${esc(item.id)}</span>`;
 }
 
 function renderResults() {
@@ -141,6 +154,7 @@ function renderResults() {
 
 async function loadReport({ archive = true, date = "" } = {}) {
   controller?.abort();
+  clearTimeout(searchTimer);
   const current = new AbortController();
   controller = current;
   state.loading = true; state.error = ""; state.sessionError = false; state.report = null; state.limit = 20;
@@ -172,6 +186,9 @@ root.addEventListener("click", event => {
   } else if (target.hasAttribute("data-show-ai")) {
     state.filters = { ...initialFilters(), priority: "all", aiOnly: true }; state.limit = 20;
     renderReport(); document.querySelector(".findings").scrollIntoView({ block: "start" });
+  } else if (target.hasAttribute("data-company")) {
+    state.filters = { ...initialFilters(), ticker: target.dataset.company }; state.limit = 20;
+    renderReport(); document.querySelector(".findings").scrollIntoView({ block: "start" });
   } else if (target.hasAttribute("data-refresh")) loadReport();
   else if (target.hasAttribute("data-reset")) { state.filters = initialFilters(); state.limit = 20; renderReport(); }
   else if (target.hasAttribute("data-more")) { state.limit += 20; renderResults(); }
@@ -180,14 +197,22 @@ root.addEventListener("change", event => {
   if (event.target.id === "report-date") { state.filters = initialFilters(); loadReport({ archive: false, date: event.target.value }); }
   else if (Object.hasOwn(state.filters, event.target.name)) {
     state.filters[event.target.name] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
-    state.limit = 20; renderResults();
+    clearTimeout(searchTimer); state.limit = 20; renderResults();
   }
 });
 root.addEventListener("input", event => {
-  if (event.target.name === "search") { state.filters.search = event.target.value; state.limit = 20; renderResults(); }
+  if (event.target.name === "search") { state.filters.search = event.target.value; state.limit = 20; clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (state.report && !state.loading) renderResults(); }, 140); }
 });
+root.addEventListener("toggle", event => {
+  const detail = event.target;
+  if (!detail.matches?.(".finding-detail") || !detail.open || detail.dataset.loaded) return;
+  const item = state.report?.items.find(value => value.id === detail.dataset.itemId);
+  if (!item) return;
+  detail.querySelector(".detail-content").innerHTML = findingDetails(item);
+  detail.dataset.loaded = "true";
+}, true);
 // Do not retain a report in a browser's back/forward cache after signing out.
-window.addEventListener("pagehide", () => { controller?.abort(); state.report = null; root.replaceChildren(); });
+window.addEventListener("pagehide", () => { controller?.abort(); clearTimeout(searchTimer); state.report = null; root.replaceChildren(); });
 window.addEventListener("pageshow", event => { if (event.persisted) window.location.reload(); });
 
 try {

@@ -11,6 +11,11 @@ Current Access policy protects **all traffic** and requires a Cloudflare account
 - Equity and recycling collections, dated archives, summary figures, search and filters.
 - Expandable explanations, source links, stock-specific impact/direction/confidence, and event history.
 - Equity AI analysis from each stock's `ai_analysis`: business effects, time horizons, uncertainty, monitoring points, provider/model, and source redactions. An overview and an AI-only filter surface enriched events; older reports without AI remain readable. Source scoring is kept separate from AI commentary, and partial enrichment runs are reported accurately.
+- Consumer-signal output: mentions, prior comparison, changes, polarity, engagement, matched terms, and source examples. Small samples and possible unrelated matches remain explicit; consumer posts never become scored events.
+- A company watchlist table links to findings. Global exposure, cross-company, category, and neutral-direction filters complement company, priority, AI, and text search. Exposure matches, affected business areas, source headlines/quality/dates, and event timestamps are retained.
+- Relevant equity findings follow the source rules verified on 2026-10-03: impact >=5 and WEAK links >=9; high impact >=8 and critical >=13. “All findings” keeps lower scores accessible. The daily JSON does not serialize these thresholds, so review `src/report.py` and `config.yaml` when source rules change.
+- Summary cards count distinct stored events; company-assessment counts are shown separately. Original collector counters remain expandable. The 2026-10-03 JSON counters, JSON events, and Markdown briefing disagree, so the reader labels the dataset being counted and links both originals rather than silently treating them as interchangeable.
+- Collection status distinguishes verified, partial, failed, skipped, no data, and not run; completed attempts and timing are shown. Detailed event markup is created only when opened, and search is debounced to keep large reports responsive.
 - Source failures, partial coverage, stale reports and empty days are displayed explicitly.
 - Download the original structured report. Five-minute server caching limits GitHub requests; refreshing does not run the source collectors.
 - Initially only `arun.b.bhat@gmail.com` may sign in. There is no public registration.
